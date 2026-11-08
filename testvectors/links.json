@@ -1,0 +1,35 @@
+{
+  "valid": [
+    {"url": "https://open.spotify.com/track/69kOkLUCkxIZYexIgSG8rq?si=abc123", "platform": "spotify", "id": "69kOkLUCkxIZYexIgSG8rq"},
+    {"url": "https://open.spotify.com/intl-de/track/69kOkLUCkxIZYexIgSG8rq", "platform": "spotify", "id": "69kOkLUCkxIZYexIgSG8rq"},
+    {"url": "https://open.spotify.com/embed/track/69kOkLUCkxIZYexIgSG8rq", "platform": "spotify", "id": "69kOkLUCkxIZYexIgSG8rq"},
+    {"url": "https://music.apple.com/us/album/get-lucky/617154241?i=617154366", "platform": "apple", "id": "617154366"},
+    {"url": "https://music.apple.com/de/song/get-lucky/617154366", "platform": "apple", "id": "617154366"},
+    {"url": "https://tidal.com/browse/track/12345678", "platform": "tidal", "id": "12345678"},
+    {"url": "https://listen.tidal.com/track/12345678", "platform": "tidal", "id": "12345678"},
+    {"url": "https://tidal.com/album/1111/track/12345678", "platform": "tidal", "id": "12345678"},
+    {"url": "https://tidal.com/track/12345678/u", "platform": "tidal", "id": "12345678"},
+    {"url": "https://tidal.com/browse/track/12345678/u", "platform": "tidal", "id": "12345678"},
+    {"url": "https://www.deezer.com/track/67238735", "platform": "deezer", "id": "67238735"},
+    {"url": "https://www.deezer.com/en/track/67238735", "platform": "deezer", "id": "67238735"},
+    {"url": "https://music.youtube.com/watch?v=4D7u5KF7SP8&si=abc", "platform": "ytmusic", "id": "4D7u5KF7SP8"},
+    {"url": "https://music.youtube.com/watch?v=4D7u5KF7SP8&list=RDAMVM4D7u5KF7SP8", "platform": "ytmusic", "id": "4D7u5KF7SP8"},
+    {"url": "https://youtu.be/4D7u5KF7SP8?si=x", "platform": "ytmusic", "id": "4D7u5KF7SP8"},
+    {"url": "https://www.youtube.com/watch?v=4D7u5KF7SP8", "platform": "ytmusic", "id": "4D7u5KF7SP8"}
+  ],
+  "invalid": [
+    "https://evil.com/?x=open.spotify.com/track/69kOkLUCkxIZYexIgSG8rq",
+    "https://open.spotify.com.evil.com/track/69kOkLUCkxIZYexIgSG8rq",
+    "https://evilspotify.com/track/69kOkLUCkxIZYexIgSG8rq",
+    "https://open.spotify.com/track/short",
+    "https://open.spotify.com/album/69kOkLUCkxIZYexIgSG8rq",
+    "https://music.apple.com/us/album/get-lucky/617154241",
+    "https://tidal.com/browse/track/abc",
+    "https://tidal.com/track/12345678/x",
+    "https://www.youtube.com/watch?v=tooshort",
+    "javascript:alert(1)",
+    "intent://x#Intent;scheme=https;end",
+    "not a url",
+    ""
+  ]
+}

@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Release.Name }}
+    spec:
+      securityContext:
+        runAsNonRoot: true
+        seccompProfile: {type: RuntimeDefault}
+      containers:
+        - name: server
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - name: http
+              containerPort: 8080
+          env:
+            - name: DOMAIN
+              value: {{ .Values.domain | quote }}
+            - name: ANDROID_PACKAGE
+              value: {{ .Values.android.package | quote }}
+            - name: ANDROID_CERT_SHA256
+              value: {{ .Values.android.certSha256 | quote }}
+            - name: TIDAL_COUNTRY_CODE
+              value: {{ .Values.tidalCountryCode | quote }}
+            {{- if .Values.tidalSecretName }}
+            - name: TIDAL_CLIENT_ID
+              valueFrom: {secretKeyRef: {name: {{ .Values.tidalSecretName }}, key: TIDAL_CLIENT_ID}}
+            - name: TIDAL_CLIENT_SECRET
+              valueFrom: {secretKeyRef: {name: {{ .Values.tidalSecretName }}, key: TIDAL_CLIENT_SECRET}}
+            {{- end }}
+          readinessProbe:
+            httpGet: {path: /healthz, port: http}
+          livenessProbe:
+            httpGet: {path: /healthz, port: http}
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities: {drop: [ALL]}
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}

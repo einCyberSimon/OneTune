@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{.Result.Entity.Title}} · {{.Result.Entity.Artist}}</title>
+<meta property="og:type" content="music.song">
+<meta property="og:title" content="{{.Result.Entity.Title}}">
+<meta property="og:description" content="{{.Result.Entity.Artist}}">
+<meta property="og:url" content="{{.PageURL}}">
+{{with .Result.Entity.ArtworkURL}}<meta property="og:image" content="{{.}}">{{end}}
+<meta name="color-scheme" content="light dark">
+<style>
+  body { font: 16px/1.4 system-ui, sans-serif; margin: 0; padding: 24px 16px; display: flex; justify-content: center; }
+  main { width: 100%; max-width: 420px; text-align: center; }
+  img { width: 240px; height: 240px; border-radius: 12px; object-fit: cover; }
+  h1 { font-size: 1.3rem; margin: 16px 0 4px; }
+  p { margin: 0 0 20px; opacity: .7; }
+  a.link { display: block; padding: 14px; margin: 8px 0; border: 1px solid currentColor; border-radius: 10px; text-decoration: none; color: inherit; }
+  label { display: block; margin-top: 16px; font-size: .9rem; opacity: .7; }
+  small { display: block; margin-top: 4px; opacity: .6; }
+</style>
+</head>
+<body>
+<main>
+  {{with .Result.Entity.ArtworkURL}}<img src="{{.}}" alt="" referrerpolicy="no-referrer">{{end}}
+  <h1>{{.Result.Entity.Title}}</h1>
+  <p>{{.Result.Entity.Artist}}</p>
+  {{range .Result.Links}}
+  <a class="link" href="{{.URL}}" data-platform="{{.Platform}}" data-search="{{.Search}}" rel="noopener noreferrer">{{if .Search}}Search on {{.Label}}{{else}}Open in {{.Label}}{{end}}</a>
+  {{end}}
+  <label><input type="checkbox" id="remember"> Always open in the service I choose</label>
+  <small>Your choice stays on this device only.</small>
+</main>
+<script nonce="{{.Nonce}}">
+(function () {
+  var key = "preferred";
+  var links = document.querySelectorAll("a.link");
+  var preferred = null;
+  try { preferred = localStorage.getItem(key); } catch (e) {}
+  if (preferred && location.search.indexOf("choose") < 0) {
+    for (var i = 0; i < links.length; i++) {
+      if (links[i].dataset.platform === preferred && links[i].dataset.search === "false") {
+        location.replace(links[i].href);
+        return;
+      }
+    }
+  }
+  var remember = document.getElementById("remember");
+  links.forEach(function (link) {
+    link.addEventListener("click", function () {
+      try { if (remember.checked) localStorage.setItem(key, link.dataset.platform); } catch (e) {}
+    });
+  });
+})();
+</script>
+</body>
+</html>

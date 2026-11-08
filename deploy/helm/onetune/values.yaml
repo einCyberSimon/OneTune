@@ -1,0 +1,26 @@
+domain: unitune.eincybersimon.de
+
+image:
+  repository: onetune-server
+  tag: ""
+  pullPolicy: IfNotPresent
+
+# Secret with TIDAL_CLIENT_ID and TIDAL_CLIENT_SECRET. Tidal is disabled when empty.
+tidalSecretName: ""
+# ISO 3166-1 country whose Tidal catalog availability is used when picking a release.
+tidalCountryCode: US
+
+android:
+  package: de.eincybersimon.onetune
+  # Comma-separated SHA-256 signing certificate fingerprints for App Links verification.
+  certSha256: ""
+
+ingress:
+  enabled: true
+  className: ""
+  annotations: {}
+  tlsSecretName: ""
+
+resources:
+  requests: {cpu: 10m, memory: 32Mi}
+  limits: {memory: 128Mi}

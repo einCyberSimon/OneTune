@@ -1,0 +1,574 @@
+{
+  "results": [
+    {
+      "musicResponsiveListItemRenderer": {
+        "playlistItemData": {
+          "videoId": "4D7u5KF7SP8"
+        },
+        "flexColumns": [
+          {
+            "musicResponsiveListItemFlexColumnRenderer": {
+              "text": {
+                "runs": [
+                  {
+                    "text": "Get Lucky (feat. Pharrell Williams and Nile Rodgers)",
+                    "navigationEndpoint": {
+                      "clickTrackingParams": "CN4CEOFnGAAiEwibrJrMqviXAxVuZnoFHck9JJCaAQMQ9CTKAQTkuHcy",
+                      "watchEndpoint": {
+                        "videoId": "4D7u5KF7SP8",
+                        "watchEndpointMusicSupportedConfigs": {
+                          "watchEndpointMusicConfig": {
+                            "musicVideoType": "MUSIC_VIDEO_TYPE_ATV"
+                          }
+                        }
+                      }
+                    }
+                  }
+                ]
+              },
+              "displayPriority": "MUSIC_RESPONSIVE_LIST_ITEM_COLUMN_DISPLAY_PRIORITY_HIGH"
+            }
+          },
+          {
+            "musicResponsiveListItemFlexColumnRenderer": {
+              "text": {
+                "runs": [
+                  {
+                    "text": "Daft Punk",
+                    "navigationEndpoint": {
+                      "clickTrackingParams": "CN4CEOFnGAAiEwibrJrMqviXAxVuZnoFHck9JJDKAQTkuHcy",
+                      "browseEndpoint": {
+                        "browseId": "UCRr1xG_2WIDs18a6cIiCxeA",
+                        "browseEndpointContextSupportedConfigs": {
+                          "browseEndpointContextMusicConfig": {
+                            "pageType": "MUSIC_PAGE_TYPE_ARTIST"
+                          }
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "text": ", "
+                  },
+                  {
+                    "text": "Pharrell Williams",
+                    "navigationEndpoint": {
+                      "clickTrackingParams": "CN4CEOFnGAAiEwibrJrMqviXAxVuZnoFHck9JJDKAQTkuHcy",
+                      "browseEndpoint": {
+                        "browseId": "UCJw8VyO6e3v6S0327AsgwcQ",
+                        "browseEndpointContextSupportedConfigs": {
+                          "browseEndpointContextMusicConfig": {
+                            "pageType": "MUSIC_PAGE_TYPE_ARTIST"
+                          }
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "text": " & "
+                  },
+                  {
+                    "text": "Nile Rodgers",
+                    "navigationEndpoint": {
+                      "clickTrackingParams": "CN4CEOFnGAAiEwibrJrMqviXAxVuZnoFHck9JJDKAQTkuHcy",
+                      "browseEndpoint": {
+                        "browseId": "UCThde8ccpEr6sP8dIHZ-ceQ",
+                        "browseEndpointContextSupportedConfigs": {
+                          "browseEndpointContextMusicConfig": {
+                            "pageType": "MUSIC_PAGE_TYPE_ARTIST"
+                          }
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "text": " • "
+                  },
+                  {
+                    "text": "Random Access Memories",
+                    "navigationEndpoint": {
+                      "clickTrackingParams": "CN4CEOFnGAAiEwibrJrMqviXAxVuZnoFHck9JJDKAQTkuHcy",
+                      "browseEndpoint": {
+                        "browseId": "MPREb_K8qWMWVqXGi",
+                        "browseEndpointContextSupportedConfigs": {
+                          "browseEndpointContextMusicConfig": {
+                            "pageType": "MUSIC_PAGE_TYPE_ALBUM"
+                          }
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "text": " • "
+                  },
+                  {
+                    "text": "6:10"
+                  }
+                ],
+                "accessibility": {
+                  "accessibilityData": {
+                    "label": "Daft Punk, Pharrell Williams & Nile Rodgers • Random Access Memories • 6 minutes, 10 seconds"
+                  }
+                }
+              },
+              "displayPriority": "MUSIC_RESPONSIVE_LIST_ITEM_COLUMN_DISPLAY_PRIORITY_HIGH"
+            }
+          },
+          {
+            "musicResponsiveListItemFlexColumnRenderer": {
+              "text": {
+                "runs": [
+                  {
+                    "text": "1.9B plays"
+                  }
+                ],
+                "accessibility": {
+                  "accessibilityData": {
+                    "label": "1.9 billion plays"
+                  }
+                }
+              },
+              "displayPriority": "MUSIC_RESPONSIVE_LIST_ITEM_COLUMN_DISPLAY_PRIORITY_HIGH"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "musicResponsiveListItemRenderer": {
+        "playlistItemData": {
+          "videoId": "Rgrt_8mXrK8"
+        },
+        "flexColumns": [
+          {
+            "musicResponsiveListItemFlexColumnRenderer": {
+              "text": {
+                "runs": [
+                  {
+                    "text": "Get Lucky (Radio Edit - feat. Pharrell Williams and Nile Rodgers)",
+                    "navigationEndpoint": {
+                      "clickTrackingParams": "CMwCEOFnGAEiEwibrJrMqviXAxVuZnoFHck9JJCaAQMQ9CTKAQTkuHcy",
+                      "watchEndpoint": {
+                        "videoId": "Rgrt_8mXrK8",
+                        "playerParams": "0gcJCTUC0OBS9m0t",
+                        "watchEndpointMusicSupportedConfigs": {
+                          "watchEndpointMusicConfig": {
+                            "musicVideoType": "MUSIC_VIDEO_TYPE_ATV"
+                          }
+                        }
+                      }
+                    }
+                  }
+                ]
+              },
+              "displayPriority": "MUSIC_RESPONSIVE_LIST_ITEM_COLUMN_DISPLAY_PRIORITY_HIGH"
+            }
+          },
+          {
+            "musicResponsiveListItemFlexColumnRenderer": {
+              "text": {
+                "runs": [
+                  {
+                    "text": "Daft Punk",
+                    "navigationEndpoint": {
+                      "clickTrackingParams": "CMwCEOFnGAEiEwibrJrMqviXAxVuZnoFHck9JJDKAQTkuHcy",
+                      "browseEndpoint": {
+                        "browseId": "UCRr1xG_2WIDs18a6cIiCxeA",
+                        "browseEndpointContextSupportedConfigs": {
+                          "browseEndpointContextMusicConfig": {
+                            "pageType": "MUSIC_PAGE_TYPE_ARTIST"
+                          }
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "text": ", "
+                  },
+                  {
+                    "text": "Pharrell Williams",
+                    "navigationEndpoint": {
+                      "clickTrackingParams": "CMwCEOFnGAEiEwibrJrMqviXAxVuZnoFHck9JJDKAQTkuHcy",
+                      "browseEndpoint": {
+                        "browseId": "UCJw8VyO6e3v6S0327AsgwcQ",
+                        "browseEndpointContextSupportedConfigs": {
+                          "browseEndpointContextMusicConfig": {
+                            "pageType": "MUSIC_PAGE_TYPE_ARTIST"
+                          }
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "text": " & "
+                  },
+                  {
+                    "text": "Nile Rodgers",
+                    "navigationEndpoint": {
+                      "clickTrackingParams": "CMwCEOFnGAEiEwibrJrMqviXAxVuZnoFHck9JJDKAQTkuHcy",
+                      "browseEndpoint": {
+                        "browseId": "UCThde8ccpEr6sP8dIHZ-ceQ",
+                        "browseEndpointContextSupportedConfigs": {
+                          "browseEndpointContextMusicConfig": {
+                            "pageType": "MUSIC_PAGE_TYPE_ARTIST"
+                          }
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "text": " • "
+                  },
+                  {
+                    "text": "Get Lucky (Radio Edit - feat. Pharrell Williams and Nile Rodgers)",
+                    "navigationEndpoint": {
+                      "clickTrackingParams": "CMwCEOFnGAEiEwibrJrMqviXAxVuZnoFHck9JJDKAQTkuHcy",
+                      "browseEndpoint": {
+                        "browseId": "MPREb_yw4jv9byKCr",
+                        "browseEndpointContextSupportedConfigs": {
+                          "browseEndpointContextMusicConfig": {
+                            "pageType": "MUSIC_PAGE_TYPE_ALBUM"
+                          }
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "text": " • "
+                  },
+                  {
+                    "text": "4:09"
+                  }
+                ],
+                "accessibility": {
+                  "accessibilityData": {
+                    "label": "Daft Punk, Pharrell Williams & Nile Rodgers • Get Lucky (Radio Edit - feat. Pharrell Williams and Nile Rodgers) • 4 minutes, 9 seconds"
+                  }
+                }
+              },
+              "displayPriority": "MUSIC_RESPONSIVE_LIST_ITEM_COLUMN_DISPLAY_PRIORITY_HIGH"
+            }
+          },
+          {
+            "musicResponsiveListItemFlexColumnRenderer": {
+              "text": {
+                "runs": [
+                  {
+                    "text": "1.9B plays"
+                  }
+                ],
+                "accessibility": {
+                  "accessibilityData": {
+                    "label": "1.9 billion plays"
+                  }
+                }
+              },
+              "displayPriority": "MUSIC_RESPONSIVE_LIST_ITEM_COLUMN_DISPLAY_PRIORITY_HIGH"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "musicResponsiveListItemRenderer": {
+        "playlistItemData": {
+          "videoId": "2KPIShmFouY"
+        },
+        "flexColumns": [
+          {
+            "musicResponsiveListItemFlexColumnRenderer": {
+              "text": {
+                "runs": [
+                  {
+                    "text": "Get Lucky",
+                    "navigationEndpoint": {
+                      "clickTrackingParams": "CLoCEOFnGAIiEwibrJrMqviXAxVuZnoFHck9JJCaAQMQ9CTKAQTkuHcy",
+                      "watchEndpoint": {
+                        "videoId": "2KPIShmFouY",
+                        "watchEndpointMusicSupportedConfigs": {
+                          "watchEndpointMusicConfig": {
+                            "musicVideoType": "MUSIC_VIDEO_TYPE_ATV"
+                          }
+                        }
+                      }
+                    }
+                  }
+                ]
+              },
+              "displayPriority": "MUSIC_RESPONSIVE_LIST_ITEM_COLUMN_DISPLAY_PRIORITY_HIGH"
+            }
+          },
+          {
+            "musicResponsiveListItemFlexColumnRenderer": {
+              "text": {
+                "runs": [
+                  {
+                    "text": "Funk Punk",
+                    "navigationEndpoint": {
+                      "clickTrackingParams": "CLoCEOFnGAIiEwibrJrMqviXAxVuZnoFHck9JJDKAQTkuHcy",
+                      "browseEndpoint": {
+                        "browseId": "UCyk07PLeX8wvclVJJ379d-g",
+                        "browseEndpointContextSupportedConfigs": {
+                          "browseEndpointContextMusicConfig": {
+                            "pageType": "MUSIC_PAGE_TYPE_ARTIST"
+                          }
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "text": " • "
+                  },
+                  {
+                    "text": "Get Lucky",
+                    "navigationEndpoint": {
+                      "clickTrackingParams": "CLoCEOFnGAIiEwibrJrMqviXAxVuZnoFHck9JJDKAQTkuHcy",
+                      "browseEndpoint": {
+                        "browseId": "MPREb_ohDkB6GSTtj",
+                        "browseEndpointContextSupportedConfigs": {
+                          "browseEndpointContextMusicConfig": {
+                            "pageType": "MUSIC_PAGE_TYPE_ALBUM"
+                          }
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "text": " • "
+                  },
+                  {
+                    "text": "4:10"
+                  }
+                ],
+                "accessibility": {
+                  "accessibilityData": {
+                    "label": "Funk Punk • Get Lucky • 4 minutes, 10 seconds"
+                  }
+                }
+              },
+              "displayPriority": "MUSIC_RESPONSIVE_LIST_ITEM_COLUMN_DISPLAY_PRIORITY_HIGH"
+            }
+          },
+          {
+            "musicResponsiveListItemFlexColumnRenderer": {
+              "text": {
+                "runs": [
+                  {
+                    "text": "7.2K plays"
+                  }
+                ],
+                "accessibility": {
+                  "accessibilityData": {
+                    "label": "7.2 thousand plays"
+                  }
+                }
+              },
+              "displayPriority": "MUSIC_RESPONSIVE_LIST_ITEM_COLUMN_DISPLAY_PRIORITY_HIGH"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "musicResponsiveListItemRenderer": {
+        "playlistItemData": {
+          "videoId": "YojsXQhh7HQ"
+        },
+        "flexColumns": [
+          {
+            "musicResponsiveListItemFlexColumnRenderer": {
+              "text": {
+                "runs": [
+                  {
+                    "text": "Get Lucky",
+                    "navigationEndpoint": {
+                      "clickTrackingParams": "CKgCEOFnGAMiEwibrJrMqviXAxVuZnoFHck9JJCaAQMQ9CTKAQTkuHcy",
+                      "watchEndpoint": {
+                        "videoId": "YojsXQhh7HQ",
+                        "watchEndpointMusicSupportedConfigs": {
+                          "watchEndpointMusicConfig": {
+                            "musicVideoType": "MUSIC_VIDEO_TYPE_ATV"
+                          }
+                        }
+                      }
+                    }
+                  }
+                ]
+              },
+              "displayPriority": "MUSIC_RESPONSIVE_LIST_ITEM_COLUMN_DISPLAY_PRIORITY_HIGH"
+            }
+          },
+          {
+            "musicResponsiveListItemFlexColumnRenderer": {
+              "text": {
+                "runs": [
+                  {
+                    "text": "Phoenix Moon",
+                    "navigationEndpoint": {
+                      "clickTrackingParams": "CKgCEOFnGAMiEwibrJrMqviXAxVuZnoFHck9JJDKAQTkuHcy",
+                      "browseEndpoint": {
+                        "browseId": "UCY3jD0WSOA5mlQtyFn3svYA",
+                        "browseEndpointContextSupportedConfigs": {
+                          "browseEndpointContextMusicConfig": {
+                            "pageType": "MUSIC_PAGE_TYPE_ARTIST"
+                          }
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "text": " • "
+                  },
+                  {
+                    "text": "Music for Hipsters",
+                    "navigationEndpoint": {
+                      "clickTrackingParams": "CKgCEOFnGAMiEwibrJrMqviXAxVuZnoFHck9JJDKAQTkuHcy",
+                      "browseEndpoint": {
+                        "browseId": "MPREb_5qkV30qFS5D",
+                        "browseEndpointContextSupportedConfigs": {
+                          "browseEndpointContextMusicConfig": {
+                            "pageType": "MUSIC_PAGE_TYPE_ALBUM"
+                          }
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "text": " • "
+                  },
+                  {
+                    "text": "4:19"
+                  }
+                ],
+                "accessibility": {
+                  "accessibilityData": {
+                    "label": "Phoenix Moon • Music for Hipsters • 4 minutes, 19 seconds"
+                  }
+                }
+              },
+              "displayPriority": "MUSIC_RESPONSIVE_LIST_ITEM_COLUMN_DISPLAY_PRIORITY_HIGH"
+            }
+          },
+          {
+            "musicResponsiveListItemFlexColumnRenderer": {
+              "text": {
+                "runs": [
+                  {
+                    "text": "52K plays"
+                  }
+                ],
+                "accessibility": {
+                  "accessibilityData": {
+                    "label": "52 thousand plays"
+                  }
+                }
+              },
+              "displayPriority": "MUSIC_RESPONSIVE_LIST_ITEM_COLUMN_DISPLAY_PRIORITY_HIGH"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "musicResponsiveListItemRenderer": {
+        "playlistItemData": {
+          "videoId": "CoMwzNkNGcs"
+        },
+        "flexColumns": [
+          {
+            "musicResponsiveListItemFlexColumnRenderer": {
+              "text": {
+                "runs": [
+                  {
+                    "text": "Get Lucky",
+                    "navigationEndpoint": {
+                      "clickTrackingParams": "CJcCEOFnGAQiEwibrJrMqviXAxVuZnoFHck9JJCaAQMQ9CTKAQTkuHcy",
+                      "watchEndpoint": {
+                        "videoId": "CoMwzNkNGcs",
+                        "playerParams": "0gcJCTUC0OBS9m0t",
+                        "watchEndpointMusicSupportedConfigs": {
+                          "watchEndpointMusicConfig": {
+                            "musicVideoType": "MUSIC_VIDEO_TYPE_ATV"
+                          }
+                        }
+                      }
+                    }
+                  }
+                ]
+              },
+              "displayPriority": "MUSIC_RESPONSIVE_LIST_ITEM_COLUMN_DISPLAY_PRIORITY_HIGH"
+            }
+          },
+          {
+            "musicResponsiveListItemFlexColumnRenderer": {
+              "text": {
+                "runs": [
+                  {
+                    "text": "Los del Fuego",
+                    "navigationEndpoint": {
+                      "clickTrackingParams": "CJcCEOFnGAQiEwibrJrMqviXAxVuZnoFHck9JJDKAQTkuHcy",
+                      "browseEndpoint": {
+                        "browseId": "UCKJlq8EO7W3P5uDIlIc_YMw",
+                        "browseEndpointContextSupportedConfigs": {
+                          "browseEndpointContextMusicConfig": {
+                            "pageType": "MUSIC_PAGE_TYPE_ARTIST"
+                          }
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "text": " • "
+                  },
+                  {
+                    "text": "A 30 Años de una Pasión Inexplicable... Solo He Nacido para Amarte",
+                    "navigationEndpoint": {
+                      "clickTrackingParams": "CJcCEOFnGAQiEwibrJrMqviXAxVuZnoFHck9JJDKAQTkuHcy",
+                      "browseEndpoint": {
+                        "browseId": "MPREb_xFSRwiNfBma",
+                        "browseEndpointContextSupportedConfigs": {
+                          "browseEndpointContextMusicConfig": {
+                            "pageType": "MUSIC_PAGE_TYPE_ALBUM"
+                          }
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "text": " • "
+                  },
+                  {
+                    "text": "2:59"
+                  }
+                ],
+                "accessibility": {
+                  "accessibilityData": {
+                    "label": "Los del Fuego • A 30 Años de una Pasión Inexplicable... Solo He Nacido para Amarte • 2 minutes, 59 seconds"
+                  }
+                }
+              },
+              "displayPriority": "MUSIC_RESPONSIVE_LIST_ITEM_COLUMN_DISPLAY_PRIORITY_HIGH"
+            }
+          },
+          {
+            "musicResponsiveListItemFlexColumnRenderer": {
+              "text": {
+                "runs": [
+                  {
+                    "text": "2.1M plays"
+                  }
+                ],
+                "accessibility": {
+                  "accessibilityData": {
+                    "label": "2.1 million plays"
+                  }
+                }
+              },
+              "displayPriority": "MUSIC_RESPONSIVE_LIST_ITEM_COLUMN_DISPLAY_PRIORITY_HIGH"
+            }
+          }
+        ]
+      }
+    }
+  ]
+}

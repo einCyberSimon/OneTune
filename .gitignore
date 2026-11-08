@@ -1,0 +1,45 @@
+*.iml
+.kotlin
+.gradle
+**/build/
+xcuserdata
+!src/**/build/
+local.properties
+.idea
+.DS_Store
+captures
+.externalNativeBuild
+.cxx
+*.xcodeproj/*
+!*.xcodeproj/project.pbxproj
+!*.xcodeproj/xcshareddata/
+!*.xcodeproj/project.xcworkspace/
+!*.xcworkspace/contents.xcworkspacedata
+**/xcshareddata/WorkspaceSettings.xcsettings
+node_modules/
+
+# Secrets and signing material (the resolver reads TIDAL_CLIENT_ID/SECRET from the environment)
+.env
+.env.*
+*.jks
+*.keystore
+keystore.properties
+google-services.json
+
+# Android build outputs
+*.apk
+*.aab
+*.hprof
+
+# Go resolver
+/server/onetune
+/server/*.test
+/server/*.out
+coverage.out
+
+# Helm
+deploy/helm/*/charts/
+*.tgz
+
+# Local tooling and logs
+*.log
