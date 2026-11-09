@@ -1,241 +1,163 @@
 package de.eincybersimon.onetune
 
-import android.content.res.Configuration
+import android.content.ActivityNotFoundException
+import android.content.ClipboardManager
+import android.content.Context
+import android.content.Intent
+import android.content.pm.verify.domain.DomainVerificationUserState
+import android.content.pm.verify.domain.DomainVerificationManager
+import android.os.Build
 import android.os.Bundle
+import android.provider.Settings
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.selection.selectable
-import androidx.compose.foundation.selection.selectableGroup
-import androidx.compose.foundation.selection.toggleable
-import androidx.compose.foundation.text.KeyboardActions
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.ListItem
-import androidx.compose.material3.ListItemDefaults
 import androidx.compose.material3.LargeTopAppBar
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.RadioButton
+import androidx.compose.material3.ModalBottomSheet
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.semantics.Role
-import androidx.compose.ui.text.input.ImeAction
-import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.core.net.toUri
 
 class MainActivity : ComponentActivity() {
+    private var needsLinkSetup by mutableStateOf(false)
+
     override fun onCreate(savedInstanceState: Bundle?) {
         enableEdgeToEdge()
         super.onCreate(savedInstanceState)
-        val preferences = PreferredService(this)
-        val server = ServerPreference(this)
         setContent {
             OnetuneTheme {
-                var service by remember { mutableStateOf(preferences.service) }
-                var customServer by remember { mutableStateOf(server.custom) }
-                SettingsScreen(
-                    service = service,
-                    onServiceChange = {
-                        service = it
-                        preferences.service = it
-                    },
-                    customServer = customServer,
-                    onCustomServerChange = {
-                        customServer = it
-                        server.custom = it
-                    },
-                )
+                HomeScreen(needsLinkSetup = needsLinkSetup)
             }
+        }
+    }
+
+    // The user changes the link settings outside the app, so re-check on return.
+    override fun onResume() {
+        super.onResume()
+        needsLinkSetup = Build.VERSION.SDK_INT >= Build.VERSION_CODES.S && hasUnapprovedLinks()
+    }
+
+    @RequiresApi(Build.VERSION_CODES.S)
+    private fun hasUnapprovedLinks(): Boolean {
+        val state = getSystemService(DomainVerificationManager::class.java)
+            .getDomainVerificationUserState(packageName) ?: return false
+        // The resolver host is verified automatically; only the third-party hosts need the user's approval.
+        return state.hostToStateMap.any { (host, status) ->
+            host != BuildConfig.LINK_HOST && status == DomainVerificationUserState.DOMAIN_STATE_NONE
         }
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun SettingsScreen(
-    service: StreamingService?,
-    onServiceChange: (StreamingService?) -> Unit,
-    customServer: String?,
-    onCustomServerChange: (String?) -> Unit,
-) {
+private fun HomeScreen(needsLinkSetup: Boolean) {
+    val context = LocalContext.current
     val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
     Scaffold(
         modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
-        topBar = { LargeTopAppBar(title = { Text(stringResource(R.string.settings_title)) }, scrollBehavior = scrollBehavior) },
+        topBar = {
+            LargeTopAppBar(
+                title = { Text(stringResource(R.string.app_name)) },
+                actions = {
+                    TextButton(onClick = { context.startActivity(Intent(context, SettingsActivity::class.java)) }) {
+                        Text(stringResource(R.string.settings_title))
+                    }
+                },
+                scrollBehavior = scrollBehavior,
+            )
+        },
     ) { padding ->
         Column(
-            Modifier.padding(padding).imePadding().verticalScroll(rememberScrollState()).padding(horizontal = 16.dp),
+            Modifier.padding(padding).verticalScroll(rememberScrollState()).padding(horizontal = 16.dp),
             verticalArrangement = Arrangement.spacedBy(8.dp),
         ) {
-            ServiceSection(service, onServiceChange)
-            ServerSection(customServer, onCustomServerChange)
-        }
-    }
-}
-
-@Composable
-private fun ServiceSection(selected: StreamingService?, onSelect: (StreamingService?) -> Unit) {
-    SectionHeader(stringResource(R.string.settings_service_header))
-    Card(colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainer)) {
-        Column(Modifier.selectableGroup()) {
-            ServiceOption(stringResource(R.string.settings_ask), selected == null) { onSelect(null) }
-            for (service in StreamingService.entries) {
-                ServiceOption(service.label, selected == service) { onSelect(service) }
+            Button(onClick = { openClipboardLink(context) }, Modifier.fillMaxWidth()) {
+                Text(stringResource(R.string.open_clipboard))
+            }
+            if (needsLinkSetup && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                var showLinkHelp by remember { mutableStateOf(false) }
+                OutlinedButton(onClick = { showLinkHelp = true }, Modifier.fillMaxWidth()) {
+                    Text(stringResource(R.string.open_link_settings))
+                }
+                if (showLinkHelp) {
+                    LinkHelpSheet(
+                        onOpenSettings = {
+                            showLinkHelp = false
+                            openDefaultLinkSettings(context)
+                        },
+                        onDismiss = { showLinkHelp = false },
+                    )
+                }
             }
         }
     }
 }
 
-/** Experimental: the switch is on exactly while a custom server may be active; turning it off restores the default. */
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun ServerSection(saved: String?, onSave: (String?) -> Unit) {
-    var enabled by remember { mutableStateOf(saved != null) }
-    SectionHeader(stringResource(R.string.settings_experimental_header), Modifier.padding(top = 16.dp))
-    Card(colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainer)) {
-        ListItem(
-            headlineContent = { Text(stringResource(R.string.settings_server_toggle)) },
-            supportingContent = { Text(stringResource(R.string.settings_server_toggle_summary)) },
-            trailingContent = { Switch(checked = enabled, onCheckedChange = null) },
-            colors = ListItemDefaults.colors(containerColor = Color.Transparent),
-            modifier = Modifier.toggleable(
-                value = enabled,
-                role = Role.Switch,
-                onValueChange = {
-                    enabled = it
-                    if (!it && saved != null) onSave(null)
-                },
-            ),
-        )
-        if (enabled) {
-            ServerField(saved, onSave, Modifier.padding(start = 16.dp, end = 16.dp, bottom = 16.dp))
+private fun LinkHelpSheet(onOpenSettings: () -> Unit, onDismiss: () -> Unit) {
+    ModalBottomSheet(onDismissRequest = onDismiss) {
+        Column(Modifier.padding(horizontal = 24.dp).padding(bottom = 24.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
+            Text(stringResource(R.string.link_help_title), style = MaterialTheme.typography.titleLarge)
+            Text(stringResource(R.string.link_help_why))
+            Text(stringResource(R.string.link_help_steps))
+            Button(onClick = onOpenSettings, Modifier.fillMaxWidth()) {
+                Text(stringResource(R.string.link_help_open_settings))
+            }
         }
     }
 }
 
-@Composable
-private fun ServerField(saved: String?, onSave: (String?) -> Unit, modifier: Modifier = Modifier) {
-    var draft by remember(saved) { mutableStateOf(saved.orEmpty()) }
-    val parsed = ServerPreference.normalize(draft)
-    val isInvalid = draft.isNotBlank() && parsed == null
-    val newValue = if (draft.isBlank()) null else parsed
-    val canSave = !isInvalid && newValue != saved
-    val save = { if (canSave) onSave(newValue) }
-
-    Column(modifier, verticalArrangement = Arrangement.spacedBy(8.dp)) {
-        OutlinedTextField(
-            value = draft,
-            onValueChange = { draft = it },
-            modifier = Modifier.fillMaxWidth(),
-            label = { Text(stringResource(R.string.settings_server_label)) },
-            placeholder = { Text(BuildConfig.LINK_HOST) },
-            supportingText = {
-                Text(stringResource(if (isInvalid) R.string.settings_server_invalid else R.string.settings_server_hint))
-            },
-            isError = isInvalid,
-            singleLine = true,
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Uri, imeAction = ImeAction.Done),
-            keyboardActions = KeyboardActions(onDone = { save() }),
-        )
-        Button(onClick = { save() }, enabled = canSave, modifier = Modifier.align(Alignment.End)) {
-            Text(stringResource(R.string.settings_server_save))
-        }
+// Unverified domains (Spotify etc.) only reach this app once the user adds them here; Android offers no way to grant it programmatically.
+@RequiresApi(Build.VERSION_CODES.S)
+private fun openDefaultLinkSettings(context: Context) {
+    val settings = Intent(Settings.ACTION_APP_OPEN_BY_DEFAULT_SETTINGS, "package:${context.packageName}".toUri())
+    try {
+        context.startActivity(settings)
+    } catch (_: ActivityNotFoundException) {
+        context.startActivity(Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, "package:${context.packageName}".toUri()))
     }
 }
 
-@Composable
-private fun SectionHeader(text: String, modifier: Modifier = Modifier) {
-    Text(
-        text,
-        modifier.padding(start = 16.dp, top = 8.dp),
-        style = MaterialTheme.typography.titleSmall,
-        color = MaterialTheme.colorScheme.primary,
-    )
-}
-
-@Composable
-private fun ServiceOption(label: String, selected: Boolean, onSelect: () -> Unit) {
-    ListItem(
-        headlineContent = { Text(label) },
-        leadingContent = { RadioButton(selected = selected, onClick = null) },
-        colors = ListItemDefaults.colors(containerColor = MaterialTheme.colorScheme.surfaceContainer),
-        modifier = Modifier.selectable(selected = selected, role = Role.RadioButton, onClick = onSelect),
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-private fun SettingsScreenPreview() {
-    OnetuneTheme {
-        SettingsScreen(service = null, onServiceChange = {}, customServer = null, onCustomServerChange = {})
-    }
-}
-
-@Preview(showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_YES)
-@Composable
-private fun SettingsScreenCustomServerDarkPreview() {
-    OnetuneTheme {
-        SettingsScreen(
-            service = StreamingService.entries.first(),
-            onServiceChange = {},
-            customServer = "https://onetune.example.org",
-            onCustomServerChange = {},
-        )
+private fun openClipboardLink(context: Context) {
+    val clipboard = context.getSystemService(ClipboardManager::class.java)
+    val text = clipboard.primaryClip?.getItemAt(0)?.coerceToText(context)?.toString().orEmpty()
+    val track = MusicLinks.findIn(text)
+    if (track == null) {
+        Toast.makeText(context, R.string.unsupported_link, Toast.LENGTH_SHORT).show()
+    } else {
+        val link = MusicLinks.shareUrl(BuildConfig.LINK_HOST, track).toUri()
+        context.startActivity(Intent(context, OpenLinkActivity::class.java).setData(link))
     }
 }
 
 @Preview(showBackground = true)
 @Composable
-private fun ServiceSectionPreview() {
-    OnetuneTheme {
-        var selected: StreamingService? by remember { mutableStateOf(null) }
-        Column(Modifier.padding(16.dp)) { ServiceSection(selected) { selected = it } }
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-private fun ServerSectionOffPreview() {
-    OnetuneTheme {
-        Column(Modifier.padding(16.dp)) { ServerSection(saved = null, onSave = {}) }
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-private fun ServerSectionOnPreview() {
-    OnetuneTheme {
-        Column(Modifier.padding(16.dp)) { ServerSection(saved = "https://onetune.example.org", onSave = {}) }
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-private fun ServerFieldPreview() {
-    OnetuneTheme {
-        var saved: String? by remember { mutableStateOf(null) }
-        ServerField(saved, { saved = it }, Modifier.padding(16.dp))
-    }
+private fun HomeScreenPreview() {
+    OnetuneTheme { HomeScreen(needsLinkSetup = true) }
 }

@@ -2,6 +2,7 @@ package de.eincybersimon.onetune
 
 import android.content.ActivityNotFoundException
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -25,18 +26,22 @@ class OpenLinkActivity : ComponentActivity() {
         enableEdgeToEdge()
         super.onCreate(savedInstanceState)
         // Exported activity: only trust links on the resolver host, and rebuild the URL from the parsed track.
-        val link = intent.data?.takeIf { it.scheme == "https" && it.host == BuildConfig.LINK_HOST }
-        val track = link?.let { MusicLinks.parseSharePath(it.path.orEmpty()) }
+        val link = intent.data?.takeIf { it.scheme == "https" }
+        val track = link?.let {
+            if (it.host == BuildConfig.LINK_HOST) MusicLinks.parseSharePath(it.path.orEmpty()) else MusicLinks.parse(it.toString())
+        }
         // Debug builds show the local resolver's page, release builds the same page as the link.
         val baseUrl = ServerPreference(this).baseUrl
-        val page = track?.let { Resolver.url(baseUrl, it).toUri() } ?: link
+        val isResolverLink = link?.host == BuildConfig.LINK_HOST
+        val page = if (isResolverLink && track != null) Resolver.url(baseUrl, track).toUri() else link
+        val preferences = PreferredService(this)
+        val preferred = preferences.service
         if (track == null) {
             openInBrowser(page)
             return
         }
 
-        val preferences = PreferredService(this)
-        val preferred = preferences.service
+
         setContent {
             OnetuneTheme {
                 // A preferred service usually opens at once; do not flash an empty sheet meanwhile.
@@ -74,11 +79,18 @@ class OpenLinkActivity : ComponentActivity() {
         }
     }
 
-    private fun open(target: Uri): Boolean = try {
-        startActivity(Intent(Intent.ACTION_VIEW, target).addCategory(Intent.CATEGORY_BROWSABLE))
-        true
-    } catch (_: ActivityNotFoundException) {
-        false
+    // Targets another app's handler explicitly: if Onetune is the default for this host, a plain VIEW would loop back here.
+    private fun open(target: Uri): Boolean {
+        val view = Intent(Intent.ACTION_VIEW, target).addCategory(Intent.CATEGORY_BROWSABLE)
+        val handler = packageManager.queryIntentActivities(view, PackageManager.MATCH_DEFAULT_ONLY)
+            .firstOrNull { it.activityInfo.packageName != packageName }
+            ?: return false
+        return try {
+            startActivity(view.setPackage(handler.activityInfo.packageName))
+            true
+        } catch (_: ActivityNotFoundException) {
+            false
+        }
     }
 
     // The browser selector keeps Android from routing the link straight back to this app.

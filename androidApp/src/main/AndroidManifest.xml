@@ -3,6 +3,15 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
 
+    <!-- Package visibility: lets OpenLinkActivity find which apps can open a web link. -->
+    <queries>
+        <intent>
+            <action android:name="android.intent.action.VIEW" />
+            <category android:name="android.intent.category.BROWSABLE" />
+            <data android:scheme="https" />
+        </intent>
+    </queries>
+
     <application
         android:allowBackup="false"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -21,6 +30,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity
+            android:exported="false"
+            android:name=".SettingsActivity" />
 
         <activity
             android:name=".ShareActivity"
@@ -54,6 +67,19 @@
 
                 <data android:scheme="https" />
                 <data android:host="${linkHost}" />
+            </intent-filter>
+            <!-- Not verifiable (we don't own these domains): offered in "Open with" or via Open by default. -->
+            <intent-filter android:autoVerify="false">
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data android:scheme="https" />
+                <data android:host="open.spotify.com" />
+                <data android:host="music.apple.com" />
+                <data android:host="www.deezer.com" />
+                <data android:host="music.youtube.com" />
             </intent-filter>
         </activity>
     </application>
