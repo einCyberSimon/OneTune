@@ -1,5 +1,5 @@
 PACKAGE := de.eincybersimon.onetune
-LINK_HOST ?= unitune.eincybersimon.de
+LINK_HOST ?= anytune.eincybersimon.de
 SHARE_URL ?= https://open.spotify.com/track/5hjalT4nzp5RVWoJl9xqam
 OPEN_PATH ?= apple/track/1561847490
 

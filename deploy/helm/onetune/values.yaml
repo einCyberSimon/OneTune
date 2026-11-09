@@ -1,9 +1,12 @@
-domain: unitune.eincybersimon.de
+domain: onetune.eincybersimon.de
 
 image:
   repository: onetune-server
   tag: ""
   pullPolicy: IfNotPresent
+
+# Names of docker-registry Secrets in the release namespace, e.g. [{name: ghcr-pull}].
+imagePullSecrets: []
 
 # Secret with TIDAL_CLIENT_ID and TIDAL_CLIENT_SECRET. Tidal is disabled when empty.
 tidalSecretName: ""
@@ -22,5 +25,5 @@ ingress:
   tlsSecretName: ""
 
 resources:
-  requests: {cpu: 10m, memory: 32Mi}
-  limits: {memory: 128Mi}
+  requests: { cpu: 10m, memory: 32Mi }
+  limits: { memory: 128Mi }

@@ -22,7 +22,7 @@ dependencies {
 }
 
 // Override with -Ponetune.linkHost=... for other deployments.
-val linkHost = providers.gradleProperty("onetune.linkHost").getOrElse("unitune.eincybersimon.de")
+val linkHost = providers.gradleProperty("onetune.linkHost").getOrElse("onetune.eincybersimon.de")
 
 android {
     namespace = "de.eincybersimon.onetune"

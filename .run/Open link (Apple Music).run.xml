@@ -5,7 +5,7 @@
     <option name="DEPLOY" value="true" />
     <option name="DEPLOY_APK_FROM_BUNDLE" value="false" />
     <option name="MODE" value="deep_link" />
-    <option name="DEEP_LINK" value="https://unitune.eincybersimon.de/apple/track/617154366" />
+    <option name="DEEP_LINK" value="https://onetune.eincybersimon.de/apple/track/617154366" />
     <option name="TARGET_SELECTOR_MODE" value="DEVICE_AND_SNAPSHOT_COMBO_BOX" />
     <method v="2">
       <option name="Android.Gradle.BeforeRunTask" enabled="true" />
