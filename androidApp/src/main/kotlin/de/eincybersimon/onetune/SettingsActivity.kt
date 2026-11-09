@@ -20,7 +20,6 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.LargeTopAppBar
 import androidx.compose.material3.ListItem
 import androidx.compose.material3.ListItemDefaults
@@ -74,7 +73,6 @@ class SettingsActivity : ComponentActivity() {
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun SettingsScreen(
     service: StreamingService?,
@@ -83,9 +81,17 @@ private fun SettingsScreen(
     onCustomServerChange: (String?) -> Unit,
 ) {
     val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
+    val page = MaterialTheme.colorScheme.surfaceContainer
     Scaffold(
         modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
-        topBar = { LargeTopAppBar(title = { Text(stringResource(R.string.settings_title)) }, scrollBehavior = scrollBehavior) },
+        containerColor = page,
+        topBar = {
+            LargeTopAppBar(
+                title = { Text(stringResource(R.string.settings_title)) },
+                colors = TopAppBarDefaults.topAppBarColors(containerColor = page, scrolledContainerColor = page),
+                scrollBehavior = scrollBehavior,
+            )
+        },
     ) { padding ->
         Column(
             Modifier.padding(padding).imePadding().verticalScroll(rememberScrollState()).padding(horizontal = 16.dp),
@@ -100,7 +106,7 @@ private fun SettingsScreen(
 @Composable
 private fun ServiceSection(selected: StreamingService?, onSelect: (StreamingService?) -> Unit) {
     SectionHeader(stringResource(R.string.settings_service_header))
-    Card(colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainer)) {
+    Card(colors = CardDefaults.cardColors(containerColor = CardContainer), border = CardBorder) {
         Column(Modifier.selectableGroup()) {
             ServiceOption(stringResource(R.string.settings_ask), selected == null) { onSelect(null) }
             for (service in StreamingService.entries) {
@@ -115,7 +121,7 @@ private fun ServiceSection(selected: StreamingService?, onSelect: (StreamingServ
 private fun ServerSection(saved: String?, onSave: (String?) -> Unit) {
     var enabled by remember { mutableStateOf(saved != null) }
     SectionHeader(stringResource(R.string.settings_experimental_header), Modifier.padding(top = 16.dp))
-    Card(colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainer)) {
+    Card(colors = CardDefaults.cardColors(containerColor = CardContainer), border = CardBorder) {
         ListItem(
             headlineContent = { Text(stringResource(R.string.settings_server_toggle)) },
             supportingContent = { Text(stringResource(R.string.settings_server_toggle_summary)) },
@@ -181,7 +187,7 @@ private fun ServiceOption(label: String, selected: Boolean, onSelect: () -> Unit
     ListItem(
         headlineContent = { Text(label) },
         leadingContent = { RadioButton(selected = selected, onClick = null) },
-        colors = ListItemDefaults.colors(containerColor = MaterialTheme.colorScheme.surfaceContainer),
+        colors = ListItemDefaults.colors(containerColor = CardContainer),
         modifier = Modifier.selectable(selected = selected, role = Role.RadioButton, onClick = onSelect),
     )
 }

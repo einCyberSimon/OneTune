@@ -7,7 +7,7 @@ import org.json.JSONException
 
 class ResolverTest {
     private fun response(vararg links: String) =
-        """{"entity":{"title":"Get Lucky","artist":"Daft Punk"},"links":[${links.joinToString(",")}]}"""
+        """{"entity":{"title":"Go Back","artist":"Velogic"},"links":[${links.joinToString(",")}]}"""
 
     private fun link(platform: String, url: String, search: Boolean? = null) =
         """{"platform":"$platform","url":"$url"${search?.let { ""","search":$it""" }.orEmpty()}}"""
@@ -28,8 +28,8 @@ class ResolverTest {
                 link("tidal", "https://tidal.com/search?q=x", search = true),
             ),
         )
-        assertEquals("Get Lucky", track.title)
-        assertEquals("Daft Punk", track.artist)
+        assertEquals("Go Back", track.title)
+        assertEquals("Velogic", track.artist)
         assertEquals(
             listOf(
                 ServiceLink(StreamingService.Spotify, "https://open.spotify.com/track/1", isSearch = false),

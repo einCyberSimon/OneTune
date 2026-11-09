@@ -6,10 +6,16 @@
     <string name="settings_service_header">Open shared links in</string>
     <string name="settings_ask">Ask every time</string>
     <string name="open_clipboard">Open link from clipboard</string>
-    <string name="open_link_settings">Set up opening Spotify, Apple Music… links</string>
+    <string name="open_link_settings">Set up automatic link opening</string>
+    <string name="link_setup_hint">Links will open in your browser unless you allow us to open them.</string>
     <string name="link_help_title">Open music links with Onetune</string>
-    <string name="link_help_why">Android sends links from sites like Spotify, Apple Music, Deezer and YouTube Music to the browser or the service\'s own app, because Onetune can\'t claim those websites itself. You have to allow it once, so Onetune can offer to open the song in the service you prefer.</string>
-    <string name="link_help_steps">In the next screen, tap \"Add link\" and select open.spotify.com, music.apple.com, www.deezer.com and music.youtube.com. If the service\'s own app is installed, also remove these links from its \"Open by default\" settings.</string>
+    <string name="link_help_problem_header">The problem</string>
+    <string name="link_help_problem">Android restricts which apps can open links by default (and it is good that they do!). For Onetune this means that we cannot open streaming links directly. But you can configure that.</string>
+    <string name="link_help_fix_header">How to set it up</string>
+    <string name="link_help_fix_1">1. Tap Open settings below, then \"Add link\", and select the links you want Onetune to open.</string>
+    <string name="link_help_fix_2">2. If the service\'s own app is installed, remove these links from its \"Open by default\" settings. E.g., if you have Spotify installed, remove the open.spotify.com link.</string>
+    <string name="link_help_next">Show me how</string>
+    <string name="link_help_back">Back</string>
     <string name="link_help_open_settings">Open settings</string>
     <string name="settings_experimental_header">Experimental</string>
     <string name="settings_server_toggle">Self-hosted server</string>
@@ -19,8 +25,9 @@
     <string name="settings_server_invalid">Enter a https address like https://onetune.example.org</string>
     <string name="settings_server_save">Save</string>
     <string name="finding_song">Finding this song everywhere…</string>
-    <string name="search_only">Search only – no exact match found</string>
-    <string name="always_use_choice">Always open in the service I choose</string>
+    <string name="search_only">Open in search only (no exact match found)</string>
+    <string name="chooser_prompt">Open this song in</string>
+    <string name="chooser_default_hint">To skip this step, pick a default service in %1$s.</string>
     <string name="load_failed">Could not load this song.</string>
     <string name="open_in_browser">Open in browser</string>
 </resources>

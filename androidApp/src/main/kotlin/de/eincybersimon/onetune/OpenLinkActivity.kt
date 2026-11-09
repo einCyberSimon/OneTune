@@ -48,12 +48,15 @@ class OpenLinkActivity : ComponentActivity() {
                 if (preferred == null || state != ChooserState.Loading) {
                     ChooserSheet(
                         state = state,
-                        onPick = { chosen, always ->
-                            if (always && !chosen.isSearch) preferences.service = chosen.service
+                        onPick = { chosen ->
                             open(chosen.url.toUri())
                             finish()
                         },
                         onOpenInBrowser = { openInBrowser(page) },
+                        onOpenSettings = {
+                            startActivity(Intent(this, SettingsActivity::class.java))
+                            finish()
+                        },
                         onDismiss = ::finish,
                     )
                 }
