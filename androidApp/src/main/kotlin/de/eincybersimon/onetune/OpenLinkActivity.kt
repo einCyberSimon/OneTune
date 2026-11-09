@@ -49,8 +49,8 @@ class OpenLinkActivity : ComponentActivity() {
                     ChooserSheet(
                         state = state,
                         onPick = { chosen ->
-                            open(chosen.url.toUri())
-                            finish()
+                            val target = chosen.url.toUri()
+                            if (open(target)) finish() else openInBrowser(target)
                         },
                         onOpenInBrowser = { openInBrowser(page) },
                         onOpenSettings = {
