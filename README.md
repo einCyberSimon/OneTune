@@ -1,55 +1,46 @@
 # Onetune
 
-Share a song from any streaming app as one link that opens in the recipient's own service. No accounts, no tracking.
+Privacy-first cross-platform song sharing.
 
-- `shared/`, `androidApp/`, `iosApp/`: Kotlin Multiplatform app. Sharing builds `https://<domain>/<platform>/track/<id>` offline; opening a link looks it up on the resolver.
-- `server/`: Go resolver that maps a track to the other services and renders the landing page.
-- `deploy/helm/onetune`: Helm chart (domain, Tidal secret and Android signing fingerprint are values).
-- `testvectors/links.json`: URL parsing cases shared by the Go and Kotlin parsers.
+Your friend sent you a "listen to this banger, you'll love it" track, but the link is from a different streaming platform? You enter a "Find out what track and open it in your music streaming app(any%)".
 
-## Development loop
+With Onetune you can share tracks with a link that allows your friends to open it in their streaming service or open a link from a some other provider in your streaming service app.
 
-`make help` lists all targets.
+The original idea comes from [FlazeIGuess/unitune](https://github.com/FlazeIGuess/unitune).
 
-```
-make server      # resolver on :8080 (set TIDAL_CLIENT_ID / TIDAL_CLIENT_SECRET to enable Tidal)
-make reverse     # adb reverse tcp:8080, so the debug app reaches the local server
-make install     # or run the `androidApp` configuration in Android Studio
-make share       # simulate sharing a Spotify link (SHARE_URL=... to change)
-make open        # simulate tapping a resolver link (OPEN_PATH=apple/track/617154366)
-make logcat
-```
+## What it does
 
-Debug builds look links up at `http://localhost:8080` (cleartext allowed for `localhost` in debug only); release builds use `https://<domain>`. Shared links always use the real domain. App Links are not verified for debug builds, so `make open` starts `OpenLinkActivity` explicitly. Pick a preferred service in the app first, otherwise links open in the browser.
+- **Share**: The app provides a transparent share dialogue that builds a `https://onetune.eincybersimon.de/<platform>/track/<id>` link you can share. When opened, the server provides links for different streaming providers so your friends can directly listen to the track.
+- **Open**: You can either open a `https://onetune.eincybersimon.de` link to open the track in your music streaming app, or let Onetune intercept links from different streaming providers and open the track in your music streaming app as well.
 
-Debugging: run `androidApp` with the debug button in Android Studio. For `ShareActivity`/`OpenLinkActivity`, which live only a moment, use _Attach Debugger to Android Process_ or set the breakpoint and trigger `make share` / `make open`. For the server use `dlv debug ./server` or your Go IDE.
+## Why Onetune?
 
-## Tests
+- **privacy**: we do not collect any data. There are no accounts, no tracking and no ads. Upon opening a `https://onetune.eincybersimon.de` link, the server resolves the corresponding links for different providers. Head over to [docs/design.md](docs/design.md) if you want to know more.
+- **Self-hosting**: The resolver is a small Go server you can host yourself. See [docs/deployment.md](docs/deployment.md) for more information.
 
-```
-make test          # everything
-make test-server   # go test -race
-make test-shared   # Kotlin link parser against testvectors/links.json
-make lint
-```
+## Documentation
 
-Server tests never touch the network:
+- [Development](docs/development.md): Repository structure, information about a local development setup and tests
+- [Design](docs/design.md): The overall design/concept for the app.
+- [Deployment](docs/deployment.md): Information for self-hosting the server.
 
-- `internal/music/providers_test.go` runs each provider against recorded responses in `internal/music/testdata`. Re-record them with `make fixtures` when an upstream format changes, and the Tidal ones with `make tidal-fixtures` (needs `TIDAL_CLIENT_ID` / `TIDAL_CLIENT_SECRET`, quoted when exported). Only `tidal_token.json` is hand-written.
-- `internal/resolve` and `internal/web` use `musictest.Fake`, a controllable provider, to cover caching, request sharing, the concurrency cap, escaping and headers.
+## FAQ
 
-When you add a platform, add its URL forms to `testvectors/links.json` (both parsers read it), a recorded fixture and a provider test.
+### Why is there no option to open the track in Spotify directly?
 
-## Deploy
+To generate the actual song link on Spotify, you need to use the Spotify API. However, Spotify [restricted developer access](https://developer.spotify.com/blog/2026-02-06-update-on-developer-access-and-platform-security) and as a result you now need a Spotify Premium account to access their API - which I do not have.
+If you want to sponsor an API key for this reach out to me ;)
 
-```
-helm upgrade --install onetune deploy/helm/onetune \
-  --set domain=anytune.eincybersimon.de \
-  --set tidalSecretName=tidal-credentials \
-  --set android.certSha256=<release signing SHA-256>
-```
+### Is there an iOS app?
 
-The container image is built from `server/Dockerfile`. Turn off or anonymize ingress access logs if you want to keep the "no IP addresses stored" promise.
+No. The code platform needs some changes to make this work, but there are two problems:
+For one, I do not have access to any apple hardware to test. On the other site, this would require an [Apple Developer Program subscription](https://developer.apple.com/programs/) which costs ~99$/year.
+If you have access to both reach out to me and we can look into making this an iOS app aswell.
+
+## AI Usage Disclaimer
+
+Most of the initial code for this project was fully vibe-coded.
+I have provided the design, audited the code and made some changes, but I want to be transparent about the code state.
 
 ## License
 
