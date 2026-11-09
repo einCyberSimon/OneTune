@@ -31,14 +31,14 @@ class MusicLinksVectorTest {
 
     @Test
     fun findsLinkInSharedText() {
-        val text = "Get Lucky by Daft Punk\nhttps://music.apple.com/us/album/get-lucky/617154241?i=617154366\n"
+        val text = "Go Back by Velogic\nhttps://music.apple.com/us/album/go-back/617154241?i=617154366\n"
         assertEquals(TrackRef("apple", "617154366"), MusicLinks.findIn(text))
         assertNull(MusicLinks.findIn("no link here"))
     }
 
     @Test
     fun findsTidalLinkInShareText() {
-        val text = "Listen to Get Lucky on TIDAL\nhttps://tidal.com/track/12345678/u"
+        val text = "Listen to Go Back on TIDAL\nhttps://tidal.com/track/12345678/u"
         assertEquals(TrackRef("tidal", "12345678"), MusicLinks.findIn(text))
     }
 

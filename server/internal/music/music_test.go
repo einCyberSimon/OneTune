@@ -37,17 +37,17 @@ func TestParseURLVectors(t *testing.T) {
 }
 
 func TestSameSong(t *testing.T) {
-	base := Entity{Title: "Get Lucky (feat. Pharrell Williams and Nile Rodgers)", Artist: "Daft Punk, Pharrell Williams & Nile Rodgers", DurationMs: 369000}
+	base := Entity{Title: "Go Back", Artist: "Velogic", DurationMs: 369000}
 	cases := []struct {
 		name  string
 		other Entity
 		want  bool
 	}{
 		{"same", base, true},
-		{"qualifier differs", Entity{Title: "Get Lucky - Remastered", Artist: "Daft Punk", DurationMs: 367000}, true},
-		{"radio edit duration", Entity{Title: "Get Lucky", Artist: "Daft Punk", DurationMs: 249000}, false},
-		{"cover artist", Entity{Title: "Get Lucky", Artist: "Funk Punk", DurationMs: 369000}, false},
-		{"other title", Entity{Title: "Lose Yourself", Artist: "Daft Punk", DurationMs: 369000}, false},
+		{"qualifier differs", Entity{Title: "Go Back - Remastered", Artist: "Velogic", DurationMs: 367000}, true},
+		{"radio edit duration", Entity{Title: "Go Back", Artist: "Velogic", DurationMs: 249000}, false},
+		{"cover artist", Entity{Title: "Go Back", Artist: "Funk Punk", DurationMs: 369000}, false},
+		{"other title", Entity{Title: "Lose Yourself", Artist: "Velogic", DurationMs: 369000}, false},
 		{"isrc wins", Entity{Title: "x", Artist: "y", ISRC: "A"}, false},
 	}
 	for _, test := range cases {
