@@ -1,0 +1,37 @@
+services:
+  server:
+    image: ghcr.io/eincybersimon/onetune-server
+    restart: unless-stopped
+    environment:
+      DOMAIN: ${DOMAIN:?set DOMAIN in .env}
+      ANDROID_PACKAGE: ${ANDROID_PACKAGE:-de.eincybersimon.onetune}
+      ANDROID_CERT_SHA256: ${ANDROID_CERT_SHA256:-}
+      TIDAL_CLIENT_ID: ${TIDAL_CLIENT_ID:-}
+      TIDAL_CLIENT_SECRET: ${TIDAL_CLIENT_SECRET:-}
+      TIDAL_COUNTRY_CODE: ${TIDAL_COUNTRY_CODE:-US}
+    read_only: true
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+    mem_limit: 128m
+
+  # Terminates TLS (certificates come from Let's Encrypt) and is the only service reachable from outside.
+  caddy:
+    image: caddy:2
+    restart: unless-stopped
+    depends_on: [server]
+    ports:
+      - "80:80"
+      - "443:443"
+      - "443:443/udp"
+    environment:
+      DOMAIN: ${DOMAIN:?set DOMAIN in .env}
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+
+volumes:
+  caddy_data:
+  caddy_config:

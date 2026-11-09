@@ -21,6 +21,7 @@ node_modules/
 # Secrets and signing material (the resolver reads TIDAL_CLIENT_ID/SECRET from the environment)
 .env
 .env.*
+!.env.example
 *.jks
 *.keystore
 keystore.properties
