@@ -24,6 +24,17 @@ dependencies {
     testImplementation(libs.json)
 }
 
+// Release tags are vMAJOR.MINOR.PATCH[-suffix]; anything else (local and CI branch builds) is a dev build.
+val tagVersion = providers.environmentVariable("GITHUB_REF_TYPE").zip(providers.environmentVariable("GITHUB_REF_NAME")) { type, name ->
+    name.takeIf { type == "tag" }
+}.orNull?.let { tag ->
+    Regex("""v((\d+)\.(\d+)\.(\d+)(?:-.+)?)""").matchEntire(tag)?.groupValues
+        ?: error("Tag '$tag' is not of the form vMAJOR.MINOR.PATCH[-suffix]")
+}
+val appVersionName = tagVersion?.get(1) ?: "0.0.0-dev"
+// 1.2.3 -> 10203; minor and patch above 99 would collide.
+val appVersionCode = tagVersion?.let { it[2].toInt() * 10_000 + it[3].toInt() * 100 + it[4].toInt() } ?: 1
+
 // Override with -Ponetune.linkHost=... for other deployments.
 val linkHost = providers.gradleProperty("onetune.linkHost").getOrElse("onetune.eincybersimon.de")
 
@@ -35,8 +46,8 @@ android {
         applicationId = "de.eincybersimon.onetune"
         minSdk = libs.versions.android.minSdk.get().toInt()
         targetSdk = libs.versions.android.targetSdk.get().toInt()
-        versionCode = 1
-        versionName = "1.0"
+        versionCode = appVersionCode
+        versionName = appVersionName
 
         manifestPlaceholders["linkHost"] = linkHost
         buildConfigField("String", "LINK_HOST", "\"$linkHost\"")
