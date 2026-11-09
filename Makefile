@@ -1,5 +1,5 @@
 PACKAGE := de.eincybersimon.onetune
-LINK_HOST ?= anytune.eincybersimon.de
+LINK_HOST ?= onetune.eincybersimon.de
 SHARE_URL ?= https://open.spotify.com/track/5hjalT4nzp5RVWoJl9xqam
 OPEN_PATH ?= apple/track/1561847490
 
@@ -16,6 +16,9 @@ reverse: ## Forward the device's localhost:8080 to this machine's server
 
 install: ## Build and install the debug APK
 	./gradlew :androidApp:installDebug
+
+clean:
+	./gradlew clean
 
 share: ## Simulate sharing SHARE_URL from a streaming app
 	adb shell "am start -a android.intent.action.SEND -t text/plain --es android.intent.extra.TEXT '$(SHARE_URL)' -n $(PACKAGE)/.ShareActivity"
