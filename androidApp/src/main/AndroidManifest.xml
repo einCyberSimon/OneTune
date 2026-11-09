@@ -19,6 +19,11 @@
         <intent>
             <action android:name="android.intent.action.VIEW" />
             <category android:name="android.intent.category.BROWSABLE" />
+            <data android:scheme="https" android:host="listen.tidal.com" />
+        </intent>
+        <intent>
+            <action android:name="android.intent.action.VIEW" />
+            <category android:name="android.intent.category.BROWSABLE" />
             <data android:scheme="https" android:host="open.spotify.com" />
         </intent>
         <intent>
@@ -106,6 +111,9 @@
                 <data android:host="music.apple.com" />
                 <data android:host="www.deezer.com" />
                 <data android:host="music.youtube.com" />
+                <data android:host="tidal.com" />
+                <data android:host="listen.tidal.com" />
+                <data android:host="www.tidal.com" />
             </intent-filter>
         </activity>
     </application>
