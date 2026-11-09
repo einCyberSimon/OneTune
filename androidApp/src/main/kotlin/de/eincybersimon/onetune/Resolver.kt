@@ -45,7 +45,7 @@ object Resolver {
     }
 
     // Drops links to unknown services and links that leave the service's own host.
-    private fun parse(json: String): ResolvedTrack {
+    internal fun parse(json: String): ResolvedTrack {
         val root = JSONObject(json)
         val entity = root.getJSONObject("entity")
         val links = root.getJSONArray("links")

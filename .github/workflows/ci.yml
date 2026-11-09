@@ -55,7 +55,7 @@ jobs:
           distribution: temurin
           java-version: 21
       - uses: gradle/actions/setup-gradle@v6
-      - run: ./gradlew :shared:testAndroidHostTest :androidApp:assembleDebug
+      - run: ./gradlew :shared:testAndroidHostTest :androidApp:testDebugUnitTest :androidApp:assembleDebug
 
       # Tags only: signed release APK attached to a GitHub release.
       - name: Build signed release APK

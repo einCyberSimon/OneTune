@@ -19,6 +19,9 @@ dependencies {
 
     implementation(libs.compose.uiToolingPreview)
     debugImplementation(libs.compose.uiTooling)
+
+    testImplementation(libs.kotlin.testJunit)
+    testImplementation(libs.json)
 }
 
 // Override with -Ponetune.linkHost=... for other deployments.

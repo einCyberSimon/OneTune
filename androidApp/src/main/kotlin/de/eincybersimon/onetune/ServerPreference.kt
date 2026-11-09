@@ -23,8 +23,9 @@ class ServerPreference(context: Context) {
 
         /** Returns `https://host[:port]` for a bare origin (scheme optional), or null if the input is not one. */
         fun normalize(input: String): String? {
-            val text = input.trim().trimEnd('/')
-            val uri = runCatching { URI(if ("://" in text) text else "https://$text") }.getOrNull() ?: return null
+            val text = input.trim()
+            val withScheme = if ("://" in text) text else "https://$text"
+            val uri = runCatching { URI(withScheme.removeSuffix("/")) }.getOrNull() ?: return null
             val isBareHttpsOrigin = uri.scheme.equals("https", ignoreCase = true) &&
                 !uri.host.isNullOrEmpty() &&
                 uri.rawUserInfo == null &&

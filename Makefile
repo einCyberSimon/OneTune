@@ -31,8 +31,8 @@ test: test-server test-shared ## Run all tests
 test-server: ## Go tests with the race detector
 	cd server && go test -race -count=1 ./...
 
-test-shared: ## Kotlin tests for the link parser
-	./gradlew :shared:testAndroidHostTest
+test-shared: ## Kotlin tests for the link parser and the Android app's resolver logic
+	./gradlew :shared:testAndroidHostTest :androidApp:testDebugUnitTest
 
 lint: ## Static checks
 	cd server && gofmt -l . && go vet ./...
