@@ -12,11 +12,11 @@ data class ResolvedTrack(val title: String, val artist: String, val links: List<
 object Resolver {
     private const val MAX_RESPONSE_BYTES = 256 * 1024
 
-    fun url(track: TrackRef) = "${BuildConfig.RESOLVER_BASE_URL}/${track.platform}/track/${track.id}"
+    fun url(baseUrl: String, track: TrackRef) = "$baseUrl/${track.platform}/track/${track.id}"
 
     /** Blocks on the network. Returns null on any failure. */
-    fun fetch(track: TrackRef): ResolvedTrack? = runCatching {
-        val connection = (URL(url(track)).openConnection() as HttpURLConnection).apply {
+    fun fetch(baseUrl: String, track: TrackRef): ResolvedTrack? = runCatching {
+        val connection = (URL(url(baseUrl, track)).openConnection() as HttpURLConnection).apply {
             setRequestProperty("Accept", "application/json")
             instanceFollowRedirects = false
             connectTimeout = 8000

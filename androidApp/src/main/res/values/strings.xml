@@ -2,8 +2,16 @@
     <string name="app_name">Onetune</string>
     <string name="share_label">Share as Onetune link</string>
     <string name="unsupported_link">Not a supported music link</string>
-    <string name="settings_title">Open shared links in</string>
+    <string name="settings_title">Settings</string>
+    <string name="settings_service_header">Open shared links in</string>
     <string name="settings_ask">Ask every time</string>
+    <string name="settings_experimental_header">Experimental</string>
+    <string name="settings_server_toggle">Self-hosted server</string>
+    <string name="settings_server_toggle_summary">Resolve and share links through your own server</string>
+    <string name="settings_server_label">Server address</string>
+    <string name="settings_server_hint">Leave empty to use the default server. Links you share will point to this server.</string>
+    <string name="settings_server_invalid">Enter an https address like https://onetune.example.org</string>
+    <string name="settings_server_save">Save</string>
     <string name="finding_song">Finding this song everywhere…</string>
     <string name="search_only">Search only – no exact match found</string>
     <string name="always_use_choice">Always open in the service I choose</string>

@@ -28,7 +28,8 @@ class OpenLinkActivity : ComponentActivity() {
         val link = intent.data?.takeIf { it.scheme == "https" && it.host == BuildConfig.LINK_HOST }
         val track = link?.let { MusicLinks.parseSharePath(it.path.orEmpty()) }
         // Debug builds show the local resolver's page, release builds the same page as the link.
-        val page = track?.let { Resolver.url(it).toUri() } ?: link
+        val baseUrl = ServerPreference(this).baseUrl
+        val page = track?.let { Resolver.url(baseUrl, it).toUri() } ?: link
         if (track == null) {
             openInBrowser(page)
             return
@@ -55,7 +56,7 @@ class OpenLinkActivity : ComponentActivity() {
         }
 
         thread {
-            val resolved = Resolver.fetch(track)
+            val resolved = Resolver.fetch(baseUrl, track)
             runOnUiThread { onResolved(resolved, preferred) }
         }
     }

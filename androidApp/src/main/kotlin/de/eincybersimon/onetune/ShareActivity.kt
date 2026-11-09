@@ -17,7 +17,7 @@ class ShareActivity : Activity() {
         } else {
             val send = Intent(Intent.ACTION_SEND)
                 .setType("text/plain")
-                .putExtra(Intent.EXTRA_TEXT, MusicLinks.shareUrl(BuildConfig.LINK_HOST, track))
+                .putExtra(Intent.EXTRA_TEXT, MusicLinks.shareUrl(ServerPreference(this).linkHost, track))
             val chooser = Intent.createChooser(send, null)
                 .putExtra(Intent.EXTRA_EXCLUDE_COMPONENTS, arrayOf(ComponentName(this, ShareActivity::class.java)))
             startActivity(chooser)

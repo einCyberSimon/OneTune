@@ -1,5 +1,6 @@
 package de.eincybersimon.onetune
 
+import android.content.res.Configuration
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -18,10 +19,10 @@ import androidx.compose.material3.ListItemDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.SheetValue
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.rememberBottomSheetState
-import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -33,6 +34,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 
 internal sealed interface ChooserState {
@@ -50,10 +52,10 @@ internal fun ChooserSheet(
     onDismiss: () -> Unit,
 ) {
     var always by remember { mutableStateOf(false) }
-    // Skipping the partial state keeps the sheet at content height instead of half the screen.
+    // Without the partial state the sheet sits at content height instead of half the screen.
     ModalBottomSheet(
         onDismissRequest = onDismiss,
-        sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true),
+        sheetState = rememberBottomSheetState(SheetValue.Hidden, enabledValues = setOf(SheetValue.Hidden, SheetValue.Expanded)),
         scrimColor = Color.Transparent,
     ) {
         when (state) {
@@ -126,3 +128,36 @@ private fun ServiceBadge(label: String) {
         Text(label.take(1), style = MaterialTheme.typography.titleMedium, color = MaterialTheme.colorScheme.onSecondaryContainer)
     }
 }
+
+// ChooserSheet itself is not previewed: ModalBottomSheet renders in its own window, which previews do not show.
+@Composable
+private fun SheetPreview(content: @Composable () -> Unit) {
+    OnetuneTheme {
+        Surface { Column { content() } }
+    }
+}
+
+private val previewTrack = ResolvedTrack(
+    title = "Get Lucky",
+    artist = "Daft Punk",
+    links = StreamingService.entries.mapIndexed { index, service -> ServiceLink(service, "https://${service.webHost}", isSearch = index == 1) },
+)
+
+@Preview(showBackground = true)
+@Composable
+private fun LoadingContentPreview() = SheetPreview { LoadingContent() }
+
+@Preview(showBackground = true)
+@Composable
+private fun FailedContentPreview() = SheetPreview { FailedContent(onOpenInBrowser = {}) }
+
+@Preview(showBackground = true)
+@Composable
+private fun LoadedContentPreview() = SheetPreview {
+    var always by remember { mutableStateOf(true) }
+    LoadedContent(previewTrack, always, { always = it }, onPick = { _, _ -> })
+}
+
+@Preview(showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_YES)
+@Composable
+private fun ServiceBadgePreview() = SheetPreview { ServiceBadge("Spotify") }
