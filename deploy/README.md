@@ -8,6 +8,7 @@ CI publishes the server image to `ghcr.io/eincybersimon/onetune-server` (built f
 
 ```
 helm upgrade --install onetune helm/onetune \
+  --set image.tag=<release version, e.g. 1.2.3> \
   --set domain=anytune.eincybersimon.de \
   --set tidalSecretName=tidal-credentials \
   --set android.certSha256=<release signing SHA-256>

@@ -1,11 +1,11 @@
 domain: onetune.eincybersimon.de
 
 image:
-  repository: onetune-server
+  repository: ghcr.io/eincybersimon/onetune-server
   tag: ""
   pullPolicy: IfNotPresent
 
-# Names of docker-registry Secrets in the release namespace, e.g. [{name: ghcr-pull}].
+# Names of docker-registry Secrets in the release namespace.
 imagePullSecrets: []
 
 # Secret with TIDAL_CLIENT_ID and TIDAL_CLIENT_SECRET. Tidal is disabled when empty.
@@ -19,11 +19,14 @@ android:
   certSha256: ""
 
 ingress:
-  enabled: true
+  enabled: false
   className: ""
   annotations: {}
   tlsSecretName: ""
 
-resources:
-  requests: { cpu: 10m, memory: 32Mi }
-  limits: { memory: 128Mi }
+httpRoute:
+  enabled: false
+  parentRefs: []
+  annotations: {}
+
+resources: {}
