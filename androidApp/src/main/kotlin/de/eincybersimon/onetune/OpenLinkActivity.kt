@@ -28,12 +28,15 @@ class OpenLinkActivity : ComponentActivity() {
         // Exported activity: only trust links on the resolver host, and rebuild the URL from the parsed track.
         val link = intent.data?.takeIf { it.scheme == "https" }
         val track = link?.let {
-            if (it.host == BuildConfig.LINK_HOST) MusicLinks.parseSharePath(it.path.orEmpty()) else MusicLinks.parse(it.toString())
+            if (it.host == BuildConfig.LINK_HOST) MusicLinks.parseSharePath(it.path.orEmpty()) else MusicLinks.parse(
+                it.toString()
+            )
         }
         // Debug builds show the local resolver's page, release builds the same page as the link.
         val baseUrl = ServerPreference(this).baseUrl
         val isResolverLink = link?.host == BuildConfig.LINK_HOST
-        val page = if (isResolverLink && track != null) Resolver.url(baseUrl, track).toUri() else link
+        val page =
+            if (isResolverLink && track != null) Resolver.url(baseUrl, track).toUri() else link
         val preferences = PreferredService(this)
         val preferred = preferences.service
         if (track == null) {
@@ -99,8 +102,9 @@ class OpenLinkActivity : ComponentActivity() {
     // The browser selector keeps Android from routing the link straight back to this app.
     private fun openInBrowser(link: Uri?) {
         if (link != null) {
-            val browser = Intent.makeMainSelectorActivity(Intent.ACTION_MAIN, Intent.CATEGORY_APP_BROWSER)
-                .setData(link)
+            val browser =
+                Intent.makeMainSelectorActivity(Intent.ACTION_MAIN, Intent.CATEGORY_APP_BROWSER)
+                    .setData(link)
             try {
                 startActivity(browser)
             } catch (_: ActivityNotFoundException) {

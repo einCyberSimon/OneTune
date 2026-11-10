@@ -1,9 +1,9 @@
 package de.eincybersimon.onetune
 
+import org.json.JSONObject
 import java.io.ByteArrayOutputStream
 import java.net.HttpURLConnection
 import java.net.URL
-import org.json.JSONObject
 
 data class ServiceLink(val service: StreamingService, val url: String, val isSearch: Boolean)
 
@@ -54,7 +54,13 @@ object Resolver {
                 val item = links.getJSONObject(index)
                 val service = StreamingService.fromId(item.getString("platform")) ?: continue
                 val url = item.getString("url")
-                if (hostOf(url) == service.webHost) add(ServiceLink(service, url, item.optBoolean("search", false)))
+                if (hostOf(url) == service.webHost) add(
+                    ServiceLink(
+                        service,
+                        url,
+                        item.optBoolean("search", false)
+                    )
+                )
             }
         }
         return ResolvedTrack(entity.optString("title"), entity.optString("artist"), parsed)

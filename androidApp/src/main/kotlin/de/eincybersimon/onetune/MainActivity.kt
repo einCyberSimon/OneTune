@@ -4,8 +4,8 @@ import android.content.ActivityNotFoundException
 import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
-import android.content.pm.verify.domain.DomainVerificationUserState
 import android.content.pm.verify.domain.DomainVerificationManager
+import android.content.pm.verify.domain.DomainVerificationUserState
 import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
@@ -102,13 +102,31 @@ private fun HomeScreen(needsLinkSetup: Boolean) {
     val context = LocalContext.current
     var showLinkHelp by remember { mutableStateOf(false) }
     Scaffold { padding ->
-        Column(Modifier.padding(padding).padding(horizontal = 24.dp).padding(bottom = 16.dp)) {
+        Column(
+            Modifier
+                .padding(padding)
+                .padding(horizontal = 24.dp)
+                .padding(bottom = 16.dp)
+        ) {
             Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End) {
-                TextButton(onClick = { context.startActivity(Intent(context, SettingsActivity::class.java)) }) {
+                TextButton(onClick = {
+                    context.startActivity(
+                        Intent(
+                            context,
+                            SettingsActivity::class.java
+                        )
+                    )
+                }) {
                     Text(stringResource(R.string.settings_title))
                 }
             }
-            Column(Modifier.weight(1f).fillMaxWidth(), Arrangement.Center, Alignment.CenterHorizontally) {
+            Column(
+                Modifier
+                    .weight(1f)
+                    .fillMaxWidth(),
+                Arrangement.Center,
+                Alignment.CenterHorizontally
+            ) {
                 BrandMark()
                 Text(
                     stringResource(R.string.app_name),
@@ -122,10 +140,15 @@ private fun HomeScreen(needsLinkSetup: Boolean) {
             }
             Button(
                 onClick = { openClipboardLink(context) },
-                Modifier.fillMaxWidth().height(56.dp),
+                Modifier
+                    .fillMaxWidth()
+                    .height(56.dp),
                 shape = MaterialTheme.shapes.large,
             ) {
-                Text(stringResource(R.string.open_clipboard), style = MaterialTheme.typography.titleMedium)
+                Text(
+                    stringResource(R.string.open_clipboard),
+                    style = MaterialTheme.typography.titleMedium
+                )
             }
         }
     }
@@ -143,7 +166,10 @@ private fun HomeScreen(needsLinkSetup: Boolean) {
 @Composable
 private fun BrandMark() {
     Box(
-        Modifier.size(96.dp).clip(RoundedCornerShape(28.dp)).background(MaterialTheme.colorScheme.primaryContainer),
+        Modifier
+            .size(96.dp)
+            .clip(RoundedCornerShape(28.dp))
+            .background(MaterialTheme.colorScheme.primaryContainer),
         contentAlignment = Alignment.Center,
     ) {
         Icon(
@@ -165,7 +191,11 @@ private fun LinkSetupPrompt(onClick: () -> Unit, modifier: Modifier = Modifier) 
     ) {
         ListItem(
             headlineContent = {
-                Text(stringResource(R.string.open_link_settings), fontWeight = FontWeight.SemiBold, color = MaterialTheme.colorScheme.primary)
+                Text(
+                    stringResource(R.string.open_link_settings),
+                    fontWeight = FontWeight.SemiBold,
+                    color = MaterialTheme.colorScheme.primary
+                )
             },
             supportingContent = { Text(stringResource(R.string.link_setup_hint)) },
             colors = ListItemDefaults.colors(containerColor = Color.Transparent),
@@ -179,12 +209,19 @@ private fun LinkHelpSheet(onOpenSettings: () -> Unit, onDismiss: () -> Unit) {
     ModalBottomSheet(
         onDismissRequest = onDismiss,
         // Without the partial state the sheet sits at content height instead of half the screen.
-        sheetState = rememberBottomSheetState(SheetValue.Hidden, enabledValues = setOf(SheetValue.Hidden, SheetValue.Expanded)),
+        sheetState = rememberBottomSheetState(
+            SheetValue.Hidden,
+            enabledValues = setOf(SheetValue.Hidden, SheetValue.Expanded)
+        ),
         containerColor = MaterialTheme.colorScheme.surfaceContainer,
     ) {
         val pager = rememberPagerState(pageCount = { HELP_PAGE_COUNT })
         val scope = rememberCoroutineScope()
-        Column(Modifier.padding(horizontal = 24.dp).padding(bottom = 24.dp)) {
+        Column(
+            Modifier
+                .padding(horizontal = 24.dp)
+                .padding(bottom = 24.dp)
+        ) {
             Text(
                 stringResource(R.string.link_help_title),
                 style = MaterialTheme.typography.headlineSmall,
@@ -192,11 +229,32 @@ private fun LinkHelpSheet(onOpenSettings: () -> Unit, onDismiss: () -> Unit) {
             )
             Box {
                 // Invisible copies size the box to the taller page, so the sheet keeps one height while paging.
-                repeat(HELP_PAGE_COUNT) { page -> HelpPage(page, Modifier.alpha(0f).clearAndSetSemantics {}) }
-                HorizontalPager(pager, Modifier.matchParentSize(), verticalAlignment = Alignment.Top) { page -> HelpPage(page) }
+                repeat(HELP_PAGE_COUNT) { page ->
+                    HelpPage(
+                        page,
+                        Modifier
+                            .alpha(0f)
+                            .clearAndSetSemantics {})
+                }
+                HorizontalPager(
+                    pager,
+                    Modifier.matchParentSize(),
+                    verticalAlignment = Alignment.Top
+                ) { page -> HelpPage(page) }
             }
-            PageDots(pager.currentPage, HELP_PAGE_COUNT, Modifier.align(Alignment.CenterHorizontally).padding(top = 24.dp))
-            Row(Modifier.fillMaxWidth().padding(top = 16.dp), horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+            PageDots(
+                pager.currentPage,
+                HELP_PAGE_COUNT,
+                Modifier
+                    .align(Alignment.CenterHorizontally)
+                    .padding(top = 24.dp)
+            )
+            Row(
+                Modifier
+                    .fillMaxWidth()
+                    .padding(top = 16.dp),
+                horizontalArrangement = Arrangement.spacedBy(12.dp)
+            ) {
                 val onLastPage = pager.currentPage == HELP_PAGE_COUNT - 1
                 if (pager.currentPage > 0) {
                     OutlinedButton(
@@ -204,12 +262,23 @@ private fun LinkHelpSheet(onOpenSettings: () -> Unit, onDismiss: () -> Unit) {
                         Modifier.height(56.dp),
                         shape = MaterialTheme.shapes.large,
                     ) {
-                        Text(stringResource(R.string.link_help_back), style = MaterialTheme.typography.titleMedium)
+                        Text(
+                            stringResource(R.string.link_help_back),
+                            style = MaterialTheme.typography.titleMedium
+                        )
                     }
                 }
                 Button(
-                    onClick = { if (onLastPage) onOpenSettings() else scope.launch { pager.animateScrollToPage(pager.currentPage + 1) } },
-                    Modifier.weight(1f).height(56.dp),
+                    onClick = {
+                        if (onLastPage) onOpenSettings() else scope.launch {
+                            pager.animateScrollToPage(
+                                pager.currentPage + 1
+                            )
+                        }
+                    },
+                    Modifier
+                        .weight(1f)
+                        .height(56.dp),
                     shape = MaterialTheme.shapes.large,
                 ) {
                     Text(
@@ -228,11 +297,21 @@ private const val HELP_PAGE_COUNT = 2
 private fun HelpPage(page: Int, modifier: Modifier = Modifier) {
     when (page) {
         0 -> HelpSection(R.string.link_help_problem_header, modifier.padding(top = 20.dp)) {
-            Text(stringResource(R.string.link_help_problem), style = MaterialTheme.typography.bodyMedium)
+            Text(
+                stringResource(R.string.link_help_problem),
+                style = MaterialTheme.typography.bodyMedium
+            )
         }
+
         else -> HelpSection(R.string.link_help_fix_header, modifier.padding(top = 20.dp)) {
-            Text(stringResource(R.string.link_help_fix_1), style = MaterialTheme.typography.bodyMedium)
-            Text(stringResource(R.string.link_help_fix_2), style = MaterialTheme.typography.bodyMedium)
+            Text(
+                stringResource(R.string.link_help_fix_1),
+                style = MaterialTheme.typography.bodyMedium
+            )
+            Text(
+                stringResource(R.string.link_help_fix_2),
+                style = MaterialTheme.typography.bodyMedium
+            )
         }
     }
 }
@@ -241,16 +320,30 @@ private fun HelpPage(page: Int, modifier: Modifier = Modifier) {
 private fun PageDots(current: Int, count: Int, modifier: Modifier = Modifier) {
     Row(modifier, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
         repeat(count) { index ->
-            val color = if (index == current) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.outlineVariant
-            Box(Modifier.size(8.dp).clip(CircleShape).background(color))
+            val color =
+                if (index == current) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.outlineVariant
+            Box(
+                Modifier
+                    .size(8.dp)
+                    .clip(CircleShape)
+                    .background(color)
+            )
         }
     }
 }
 
 @Composable
-private fun HelpSection(@StringRes header: Int, modifier: Modifier = Modifier, content: @Composable () -> Unit) {
+private fun HelpSection(
+    @StringRes header: Int,
+    modifier: Modifier = Modifier,
+    content: @Composable () -> Unit
+) {
     Column(modifier, verticalArrangement = Arrangement.spacedBy(8.dp)) {
-        Text(stringResource(header), style = MaterialTheme.typography.titleSmall, color = MaterialTheme.colorScheme.primary)
+        Text(
+            stringResource(header),
+            style = MaterialTheme.typography.titleSmall,
+            color = MaterialTheme.colorScheme.primary
+        )
         content()
     }
 }
@@ -258,11 +351,19 @@ private fun HelpSection(@StringRes header: Int, modifier: Modifier = Modifier, c
 // Unverified domains (Spotify etc.) only reach this app once the user adds them here; Android offers no way to grant it programmatically.
 @RequiresApi(Build.VERSION_CODES.S)
 private fun openDefaultLinkSettings(context: Context) {
-    val settings = Intent(Settings.ACTION_APP_OPEN_BY_DEFAULT_SETTINGS, "package:${context.packageName}".toUri())
+    val settings = Intent(
+        Settings.ACTION_APP_OPEN_BY_DEFAULT_SETTINGS,
+        "package:${context.packageName}".toUri()
+    )
     try {
         context.startActivity(settings)
     } catch (_: ActivityNotFoundException) {
-        context.startActivity(Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, "package:${context.packageName}".toUri()))
+        context.startActivity(
+            Intent(
+                Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
+                "package:${context.packageName}".toUri()
+            )
+        )
     }
 }
 

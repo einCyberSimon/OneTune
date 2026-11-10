@@ -62,7 +62,10 @@ internal fun ChooserSheet(
     // Without the partial state the sheet sits at content height instead of half the screen.
     ModalBottomSheet(
         onDismissRequest = onDismiss,
-        sheetState = rememberBottomSheetState(SheetValue.Hidden, enabledValues = setOf(SheetValue.Hidden, SheetValue.Expanded)),
+        sheetState = rememberBottomSheetState(
+            SheetValue.Hidden,
+            enabledValues = setOf(SheetValue.Hidden, SheetValue.Expanded)
+        ),
         scrimColor = Color.Transparent,
         containerColor = MaterialTheme.colorScheme.surfaceContainer,
     ) {
@@ -78,7 +81,9 @@ internal fun ChooserSheet(
 private fun LoadingContent() {
     Column(Modifier.padding(horizontal = 24.dp, vertical = 16.dp)) {
         Text(stringResource(R.string.finding_song), style = MaterialTheme.typography.bodyLarge)
-        LinearProgressIndicator(Modifier.fillMaxWidth().padding(top = 16.dp, bottom = 8.dp))
+        LinearProgressIndicator(Modifier
+            .fillMaxWidth()
+            .padding(top = 16.dp, bottom = 8.dp))
     }
 }
 
@@ -91,8 +96,14 @@ private fun FailedContent(onOpenInBrowser: () -> Unit) {
 }
 
 @Composable
-private fun LoadedContent(track: ResolvedTrack, onPick: (ServiceLink) -> Unit, onOpenSettings: () -> Unit) {
-    Column(Modifier.padding(horizontal = 24.dp).padding(top = 4.dp, bottom = 16.dp)) {
+private fun LoadedContent(
+    track: ResolvedTrack,
+    onPick: (ServiceLink) -> Unit,
+    onOpenSettings: () -> Unit
+) {
+    Column(Modifier
+        .padding(horizontal = 24.dp)
+        .padding(top = 4.dp, bottom = 16.dp)) {
         Text(
             track.title,
             style = MaterialTheme.typography.headlineSmall,
@@ -124,7 +135,10 @@ private fun LoadedContent(track: ResolvedTrack, onPick: (ServiceLink) -> Unit, o
         ) {
             Spacer(Modifier.height(4.dp))
             links.forEachIndexed { index, link ->
-                if (index > 0) HorizontalDivider(Modifier.padding(start = 76.dp), color = MaterialTheme.colorScheme.outlineVariant)
+                if (index > 0) HorizontalDivider(
+                    Modifier.padding(start = 76.dp),
+                    color = MaterialTheme.colorScheme.outlineVariant
+                )
                 ListItem(
                     headlineContent = {
                         Text(
@@ -141,7 +155,10 @@ private fun LoadedContent(track: ResolvedTrack, onPick: (ServiceLink) -> Unit, o
             }
             Spacer(Modifier.height(4.dp))
         }
-        DefaultServiceHint(onOpenSettings, Modifier.padding(start = 16.dp, end = 16.dp, top = 12.dp, bottom = 16.dp))
+        DefaultServiceHint(
+            onOpenSettings,
+            Modifier.padding(start = 16.dp, end = 16.dp, top = 12.dp, bottom = 16.dp)
+        )
     }
 }
 
@@ -149,13 +166,28 @@ private fun LoadedContent(track: ResolvedTrack, onPick: (ServiceLink) -> Unit, o
 private fun DefaultServiceHint(onOpenSettings: () -> Unit, modifier: Modifier = Modifier) {
     val settings = stringResource(R.string.settings_title)
     val hint = stringResource(R.string.chooser_default_hint, settings)
-    val linkStyle = TextLinkStyles(SpanStyle(color = MaterialTheme.colorScheme.primary, textDecoration = TextDecoration.Underline))
+    val linkStyle = TextLinkStyles(
+        SpanStyle(
+            color = MaterialTheme.colorScheme.primary,
+            textDecoration = TextDecoration.Underline
+        )
+    )
     val text = buildAnnotatedString {
         append(hint)
         val start = hint.indexOf(settings)
-        if (start >= 0) addLink(LinkAnnotation.Clickable("settings", linkStyle) { onOpenSettings() }, start, start + settings.length)
+        if (start >= 0) addLink(
+            LinkAnnotation.Clickable(
+                "settings",
+                linkStyle
+            ) { onOpenSettings() }, start, start + settings.length
+        )
     }
-    Text(text, modifier, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+    Text(
+        text,
+        modifier,
+        style = MaterialTheme.typography.bodySmall,
+        color = MaterialTheme.colorScheme.onSurfaceVariant
+    )
 }
 
 // The service's logo in white on its brand color, like an app icon; search-only rows go neutral.
@@ -180,7 +212,10 @@ private fun ServiceBadge(service: StreamingService, muted: Boolean) {
         StreamingService.YouTubeMusic -> R.drawable.ic_service_youtube_music
     }
     Box(
-        Modifier.size(44.dp).clip(RoundedCornerShape(14.dp)).background(background),
+        Modifier
+            .size(44.dp)
+            .clip(RoundedCornerShape(14.dp))
+            .background(background),
         contentAlignment = Alignment.Center,
     ) {
         Icon(painterResource(logo), contentDescription = null, Modifier.size(26.dp), tint = glyph)
@@ -198,7 +233,13 @@ private fun SheetPreview(content: @Composable () -> Unit) {
 private val previewTrack = ResolvedTrack(
     title = "Go Back",
     artist = "Velogic",
-    links = StreamingService.entries.mapIndexed { index, service -> ServiceLink(service, "https://${service.webHost}", isSearch = index == 1) },
+    links = StreamingService.entries.mapIndexed { index, service ->
+        ServiceLink(
+            service,
+            "https://${service.webHost}",
+            isSearch = index == 1
+        )
+    },
 )
 
 @Preview(showBackground = true)
@@ -211,7 +252,8 @@ private fun FailedContentPreview() = SheetPreview { FailedContent(onOpenInBrowse
 
 @Preview(showBackground = true)
 @Composable
-private fun LoadedContentPreview() = SheetPreview { LoadedContent(previewTrack, onPick = {}, onOpenSettings = {}) }
+private fun LoadedContentPreview() =
+    SheetPreview { LoadedContent(previewTrack, onPick = {}, onOpenSettings = {}) }
 
 @Preview(showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable

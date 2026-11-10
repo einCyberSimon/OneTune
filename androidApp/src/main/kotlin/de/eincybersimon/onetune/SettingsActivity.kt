@@ -88,13 +88,20 @@ private fun SettingsScreen(
         topBar = {
             LargeTopAppBar(
                 title = { Text(stringResource(R.string.settings_title)) },
-                colors = TopAppBarDefaults.topAppBarColors(containerColor = page, scrolledContainerColor = page),
+                colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = page,
+                    scrolledContainerColor = page
+                ),
                 scrollBehavior = scrollBehavior,
             )
         },
     ) { padding ->
         Column(
-            Modifier.padding(padding).imePadding().verticalScroll(rememberScrollState()).padding(horizontal = 16.dp),
+            Modifier
+                .padding(padding)
+                .imePadding()
+                .verticalScroll(rememberScrollState())
+                .padding(horizontal = 16.dp),
             verticalArrangement = Arrangement.spacedBy(8.dp),
         ) {
             ServiceSection(service, onServiceChange)
@@ -108,7 +115,10 @@ private fun ServiceSection(selected: StreamingService?, onSelect: (StreamingServ
     SectionHeader(stringResource(R.string.settings_service_header))
     Card(colors = CardDefaults.cardColors(containerColor = CardContainer), border = CardBorder) {
         Column(Modifier.selectableGroup()) {
-            ServiceOption(stringResource(R.string.settings_ask), selected == null) { onSelect(null) }
+            ServiceOption(
+                stringResource(R.string.settings_ask),
+                selected == null
+            ) { onSelect(null) }
             for (service in StreamingService.entries) {
                 ServiceOption(service.label, selected == service) { onSelect(service) }
             }
@@ -120,7 +130,10 @@ private fun ServiceSection(selected: StreamingService?, onSelect: (StreamingServ
 @Composable
 private fun ServerSection(saved: String?, onSave: (String?) -> Unit) {
     var enabled by remember { mutableStateOf(saved != null) }
-    SectionHeader(stringResource(R.string.settings_experimental_header), Modifier.padding(top = 16.dp))
+    SectionHeader(
+        stringResource(R.string.settings_experimental_header),
+        Modifier.padding(top = 16.dp)
+    )
     Card(colors = CardDefaults.cardColors(containerColor = CardContainer), border = CardBorder) {
         ListItem(
             headlineContent = { Text(stringResource(R.string.settings_server_toggle)) },
@@ -163,7 +176,10 @@ private fun ServerField(saved: String?, onSave: (String?) -> Unit, modifier: Mod
             },
             isError = isInvalid,
             singleLine = true,
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Uri, imeAction = ImeAction.Done),
+            keyboardOptions = KeyboardOptions(
+                keyboardType = KeyboardType.Uri,
+                imeAction = ImeAction.Done
+            ),
             keyboardActions = KeyboardActions(onDone = { save() }),
         )
         Button(onClick = { save() }, enabled = canSave, modifier = Modifier.align(Alignment.End)) {
@@ -188,7 +204,11 @@ private fun ServiceOption(label: String, selected: Boolean, onSelect: () -> Unit
         headlineContent = { Text(label) },
         leadingContent = { RadioButton(selected = selected, onClick = null) },
         colors = ListItemDefaults.colors(containerColor = CardContainer),
-        modifier = Modifier.selectable(selected = selected, role = Role.RadioButton, onClick = onSelect),
+        modifier = Modifier.selectable(
+            selected = selected,
+            role = Role.RadioButton,
+            onClick = onSelect
+        ),
     )
 }
 
@@ -196,7 +216,11 @@ private fun ServiceOption(label: String, selected: Boolean, onSelect: () -> Unit
 @Composable
 private fun SettingsScreenPreview() {
     OnetuneTheme {
-        SettingsScreen(service = null, onServiceChange = {}, customServer = null, onCustomServerChange = {})
+        SettingsScreen(
+            service = null,
+            onServiceChange = {},
+            customServer = null,
+            onCustomServerChange = {})
     }
 }
 
@@ -234,7 +258,11 @@ private fun ServerSectionOffPreview() {
 @Composable
 private fun ServerSectionOnPreview() {
     OnetuneTheme {
-        Column(Modifier.padding(16.dp)) { ServerSection(saved = "https://onetune.example.org", onSave = {}) }
+        Column(Modifier.padding(16.dp)) {
+            ServerSection(
+                saved = "https://onetune.example.org",
+                onSave = {})
+        }
     }
 }
 

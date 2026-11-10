@@ -27,11 +27,11 @@ class ServerPreference(context: Context) {
             val withScheme = if ("://" in text) text else "https://$text"
             val uri = runCatching { URI(withScheme.removeSuffix("/")) }.getOrNull() ?: return null
             val isBareHttpsOrigin = uri.scheme.equals("https", ignoreCase = true) &&
-                !uri.host.isNullOrEmpty() &&
-                uri.rawUserInfo == null &&
-                uri.rawPath.isNullOrEmpty() &&
-                uri.rawQuery == null &&
-                uri.rawFragment == null
+                    !uri.host.isNullOrEmpty() &&
+                    uri.rawUserInfo == null &&
+                    uri.rawPath.isNullOrEmpty() &&
+                    uri.rawQuery == null &&
+                    uri.rawFragment == null
             return if (isBareHttpsOrigin) "https://${uri.rawAuthority}".lowercase() else null
         }
     }
