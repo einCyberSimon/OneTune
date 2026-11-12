@@ -179,3 +179,20 @@ func TestValidRef(t *testing.T) {
 		}
 	}
 }
+
+func TestResolveDoesNotCacheIncompleteResultForLong(t *testing.T) {
+	src := source("src")
+	broken := target("broken")
+	broken.FindErr = errors.New("upstream down")
+	resolver := New([]music.Provider{src, broken})
+	if _, err := resolver.Resolve(context.Background(), ref("src", "1")); err != nil {
+		t.Fatal(err)
+	}
+	entry, ok := resolver.fromCache(ref("src", "1"))
+	if !ok {
+		t.Fatal("result not cached")
+	}
+	if remaining := time.Until(entry.expires); remaining > failureTTL {
+		t.Fatalf("incomplete result cached for %v, want at most %v", remaining, failureTTL)
+	}
+}

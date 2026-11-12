@@ -5,6 +5,7 @@ import (
 	"errors"
 	"log"
 	"sync"
+	"sync/atomic"
 	"time"
 
 	"golang.org/x/sync/singleflight"
@@ -98,8 +99,8 @@ func (r *Resolver) Resolve(ctx context.Context, ref music.Ref) (Result, error) {
 		}
 		budget, cancel := context.WithTimeout(context.WithoutCancel(ctx), resolveBudget)
 		defer cancel()
-		result, err := r.resolve(budget, ref)
-		r.store(ref, result, err)
+		result, complete, err := r.resolve(budget, ref)
+		r.store(ref, result, complete, err)
 		return result, err
 	})
 	if err != nil {
@@ -108,17 +109,19 @@ func (r *Resolver) Resolve(ctx context.Context, ref music.Ref) (Result, error) {
 	return value.(Result), nil
 }
 
-func (r *Resolver) resolve(ctx context.Context, ref music.Ref) (Result, error) {
+// resolve reports complete=false when some provider failed for a reason other
+// than not finding the track, so the result is missing links that may exist.
+func (r *Resolver) resolve(ctx context.Context, ref music.Ref) (result Result, complete bool, err error) {
 	source := r.provider(ref.Platform)
 	if source == nil {
-		return Result{}, music.ErrNotFound
+		return Result{}, false, music.ErrNotFound
 	}
 	entity, err := source.Lookup(ctx, ref.ID)
 	if err != nil {
-		return Result{}, err
+		return Result{}, false, err
 	}
 	if entity.Title == "" {
-		return Result{}, errors.New("source returned no title")
+		return Result{}, false, errors.New("source returned no title")
 	}
 	if entity.ISRC == "" {
 		entity.ISRC = r.discoverISRC(ctx, entity)
@@ -126,6 +129,7 @@ func (r *Resolver) resolve(ctx context.Context, ref music.Ref) (Result, error) {
 
 	found := make([]*music.Found, len(r.providers))
 	var group sync.WaitGroup
+	var findFailed atomic.Bool
 	for index, provider := range r.providers {
 		if provider.Name() == ref.Platform {
 			continue
@@ -136,6 +140,7 @@ func (r *Resolver) resolve(ctx context.Context, ref music.Ref) (Result, error) {
 			match, err := provider.Find(ctx, entity)
 			if err != nil {
 				if !errors.Is(err, music.ErrNotFound) {
+					findFailed.Store(true)
 					log.Printf("find on %s failed: %v", provider.Name(), err)
 				}
 				return
@@ -145,7 +150,7 @@ func (r *Resolver) resolve(ctx context.Context, ref music.Ref) (Result, error) {
 	}
 	group.Wait()
 
-	result := Result{Source: ref, Entity: entity}
+	result = Result{Source: ref, Entity: entity}
 	for index, provider := range r.providers {
 		switch {
 		case provider.Name() == ref.Platform:
@@ -155,7 +160,7 @@ func (r *Resolver) resolve(ctx context.Context, ref music.Ref) (Result, error) {
 			result.Links = append(result.Links, Link{Platform: provider.Name(), Label: provider.Label(), URL: match.URL, Search: match.Search})
 		}
 	}
-	return result, nil
+	return result, !findFailed.Load(), nil
 }
 
 // discoverISRC asks the platforms that expose ISRCs (Deezer) to identify a
@@ -183,13 +188,13 @@ func (r *Resolver) fromCache(ref music.Ref) (cached, bool) {
 }
 
 // store also caches failures, so repeated requests for unknown IDs cannot
-// drain the upstream rate limits.
-func (r *Resolver) store(ref music.Ref, result Result, err error) {
+// drain the upstream rate limits. Incomplete results get the short failure TTL.
+func (r *Resolver) store(ref music.Ref, result Result, complete bool, err error) {
 	ttl := cacheTTL
 	switch {
 	case errors.Is(err, music.ErrNotFound):
 		ttl = notFoundTTL
-	case err != nil:
+	case err != nil || !complete:
 		ttl = failureTTL
 	}
 	r.mutex.Lock()

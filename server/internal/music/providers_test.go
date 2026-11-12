@@ -219,3 +219,16 @@ func TestTidal(t *testing.T) {
 		t.Fatalf("token fetched %d times, want 1", got)
 	}
 }
+
+func TestTidalAuthFailureIsNotNotFound(t *testing.T) {
+	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, _ *http.Request) {
+		_, _ = w.Write([]byte(`{"error":"invalid_client"}`))
+	}))
+	t.Cleanup(server.Close)
+	tidal := NewTidal("id", "secret", "US")
+	tidal.upstream = unlimited()
+	tidal.authURL = server.URL
+	if _, err := tidal.Lookup(context.Background(), "1"); err == nil || errors.Is(err, ErrNotFound) {
+		t.Fatalf("got %v, want a non-NotFound error", err)
+	}
+}

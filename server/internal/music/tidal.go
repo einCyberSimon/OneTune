@@ -4,6 +4,8 @@ import (
 	"context"
 	"encoding/base64"
 	"encoding/json"
+	"errors"
+	"fmt"
 	"net/http"
 	"net/url"
 	"regexp"
@@ -75,8 +77,11 @@ func (t *Tidal) authHeader(ctx context.Context) (http.Header, error) {
 			AccessToken string `json:"access_token"`
 			ExpiresIn   int    `json:"expires_in"`
 		}
-		if err := json.Unmarshal(data, &token); err != nil || token.AccessToken == "" {
-			return nil, ErrNotFound
+		if err := json.Unmarshal(data, &token); err != nil {
+			return nil, fmt.Errorf("tidal token response: %w", err)
+		}
+		if token.AccessToken == "" {
+			return nil, errors.New("tidal token response has no access_token")
 		}
 		t.token = token.AccessToken
 		t.tokenExpiry = time.Now().Add(time.Duration(token.ExpiresIn-60) * time.Second)
